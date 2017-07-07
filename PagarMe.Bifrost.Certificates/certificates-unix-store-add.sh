@@ -5,11 +5,8 @@ if [ -f "/etc/redhat-release" ]; then
 elif [ -f "/etc/debian_version" ]; then
     apt-get update
     apt-get install libnss3-tools -y
-else
-    distro=$(lsb_release -s | cut -d: -f2 | sed s'/^\s*//g')
-    if [ "$distro" == "Arch Linux" ]; then
-        pacman -S --noconfirm --force nss
-    fi
+elif [ -f "/etc/arch-release"]; then
+    pacman -S --noconfirm --force nss
 fi
 
 
