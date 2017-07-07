@@ -9,7 +9,7 @@ namespace PagarMe.Bifrost.Certificates.Stores
 {
     class UnixStore : Store
     {
-        private const String storePath = "/usr/local/share/ca-certificates";
+        private static readonly String storePath = getStorePath();
         private static readonly String certName = TLSConfig.Address;
         private static readonly String pfxPath = Path.Combine(storePath, $"{certName}.pfx");
 
@@ -78,6 +78,38 @@ namespace PagarMe.Bifrost.Certificates.Stores
             }
 
             return certPath;
+        }
+
+        private static String getStorePathAndCreateIfNotExists()
+        {
+            var path = getStorePath();
+
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
+            return path;
+        }
+
+        private static String getStorePath()
+        {
+            if (File.Exists(@"/etc/redhat-release"))
+            {
+                return "/etc/pki/ca-trust/source/anchors";
+            }
+
+            if (File.Exists(@"/etc/debian_version"))
+            {
+                return "/usr/local/share/ca-certificates";
+            }
+
+            if (File.Exists("/etc/arch-release"))
+            {
+                return "/etc/ca-certificates/trust-source/anchors/";
+            }
+
+            throw new NotImplementedException("Certificates for this distro can not be installed");
         }
     }
 }
