@@ -2,8 +2,7 @@
 
 ## Install Mono Service to run as service at Linux - need .NET 4.5
 
-* sudo apt install mono-complete
-* sudo apt install mono-4.0-service
+[Install Mono](http://www.mono-project.com/download/)
 
 ## Initialize service
 
