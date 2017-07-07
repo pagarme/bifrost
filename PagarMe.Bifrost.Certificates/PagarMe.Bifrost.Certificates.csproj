@@ -76,9 +76,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <Content Include="bifrost.ico" />
-    <Content Include="certificates-unix-store-get.sh">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="certificates-windows-firefox-store.bat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
