@@ -53,8 +53,8 @@ namespace PagarMe.Bifrost.Certificates.Stores
             var result = Terminal.Run("sh", scriptPath.ArrayWith(parameters));
             if (!result.Succedded)
             {
-                Log.Me.Error(result.Output);
-                Log.Me.Error(result.Error);
+                Log.Me.Error($"Output: {result.Output}");
+                Log.Me.Error($"Error: {result.Error}");
                 throw new Exception($"Could not install certificate: bash {scriptName} exited with code {result.Code}");
             }
         }
