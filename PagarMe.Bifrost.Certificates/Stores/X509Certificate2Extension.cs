@@ -9,6 +9,8 @@ namespace PagarMe.Bifrost.Certificates.Stores
     {
         public static Byte[] GetPrivateKeyRawData(this X509Certificate2 certificate)
         {
+            if (!certificate.HasPrivateKey) return null;
+
             var privateKey = (RSACryptoServiceProvider)certificate.PrivateKey;
 
             var parameters = privateKey.ExportParameters(true);

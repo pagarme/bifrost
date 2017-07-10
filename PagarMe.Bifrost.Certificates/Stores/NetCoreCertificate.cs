@@ -45,6 +45,8 @@ namespace PagarMe.Bifrost.Certificates.Stores
 
         private String createPemFile(String title, Byte[] content, String extension)
         {
+            if (content == null) return null;
+
             var certPath = Path.Combine(FilePath, $"{Filename}.{extension}");
 
             using (var stream = new FileStream(certPath, FileMode.Create))
