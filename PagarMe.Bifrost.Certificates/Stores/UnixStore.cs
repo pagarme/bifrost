@@ -34,13 +34,13 @@ namespace PagarMe.Bifrost.Certificates.Stores
         {
             Log.TryLogOnException(() =>
             {
-                executeBash("certificates-unix-install-cert-tools.sh");
+                executeBash("unix-install-cert-tools.sh");
 
                 using (var netCore = NetCoreCertificate.Export(tls, certificatesPath))
                 {
-                    executeBash("certificates-unix-export-cert.sh", netCore.FilePath, netCore.Filename);
-                    executeBash("certificates-unix-store-os.sh", netCore.FilePath, netCore.Filename);
-                    executeBash("certificates-unix-store-firefox.sh", netCore.FilePath, netCore.Filename);
+                    executeBash("unix-export-cert.sh", netCore.FilePath, netCore.Filename);
+                    executeBash("unix-store-os.sh", netCore.FilePath, netCore.Filename);
+                    executeBash("unix-store-firefox.sh", netCore.FilePath, netCore.Filename);
                 }
 
                 Log.Me.Info("Finish generating");
@@ -49,7 +49,8 @@ namespace PagarMe.Bifrost.Certificates.Stores
 
         private static void executeBash(String scriptName, params String[] parameters)
         {
-            var result = Terminal.Run("sh", scriptName.ArrayWith(parameters));
+            var scriptPath = Path.Combine("CertificateScripts", scriptName);
+            var result = Terminal.Run("sh", scriptPath.ArrayWith(parameters));
             if (!result.Succedded)
             {
                 Log.Me.Error(result.Output);

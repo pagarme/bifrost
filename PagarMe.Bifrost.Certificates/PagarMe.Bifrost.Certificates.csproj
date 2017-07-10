@@ -77,20 +77,20 @@
   <ItemGroup>
     <None Include="App.config" />
     <Content Include="bifrost.ico" />
-    <Content Include="certificates-windows-firefox-store.bat">
+    <Content Include="CertificateScripts\windows-firefox-store.bat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="packages.config" />
-    <Content Include="certificates-unix-export-cert.sh">
+    <Content Include="CertificateScripts\unix-export-cert.sh">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="certificates-unix-install-cert-tools.sh">
+    <Content Include="CertificateScripts\unix-install-cert-tools.sh">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="certificates-unix-store-firefox.sh">
+    <Content Include="CertificateScripts\unix-store-firefox.sh">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="certificates-unix-store-os.sh">
+    <Content Include="CertificateScripts\unix-store-os.sh">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

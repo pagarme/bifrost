@@ -86,7 +86,7 @@ namespace PagarMe.Bifrost.Certificates.Stores
 
         private static void installOnFireFox(String mozillaPath, X509Certificate2 cert, String trust)
         {
-            var addScriptPath = "certificates-windows-firefox-store.bat";
+            var addScriptPath = Path.Combine("CertificateScripts", "windows-firefox-store.bat");
             var subject = cert.Subject.CleanSubject();
 
             var certDbs = Directory.GetFiles(mozillaPath, "*cert*.db", SearchOption.AllDirectories);
