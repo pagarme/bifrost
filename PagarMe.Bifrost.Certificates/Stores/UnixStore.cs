@@ -36,11 +36,16 @@ namespace PagarMe.Bifrost.Certificates.Stores
             {
                 executeBash("unix-install-cert-tools.sh");
 
+                using (var netCore = NetCoreCertificate.Export(ca, certificatesPath))
+                {
+                    executeBash("unix-store-firefox.sh", netCore.FilePath, netCore.Filename, "TC,,");
+                }
+
                 using (var netCore = NetCoreCertificate.Export(tls, certificatesPath))
                 {
                     executeBash("unix-export-cert.sh", netCore.FilePath, netCore.Filename);
                     executeBash("unix-store-os.sh", netCore.FilePath, netCore.Filename);
-                    executeBash("unix-store-firefox.sh", netCore.FilePath, netCore.Filename);
+                    executeBash("unix-store-firefox.sh", netCore.FilePath, netCore.Filename, "u,,");
                 }
 
                 Log.Me.Info("Finish generating");
