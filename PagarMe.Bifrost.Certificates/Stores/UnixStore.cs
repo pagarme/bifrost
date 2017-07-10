@@ -1,5 +1,4 @@
-﻿using Org.BouncyCastle.Utilities.IO.Pem;
-using PagarMe.Bifrost.Certificates.Generation;
+﻿using PagarMe.Bifrost.Certificates.Generation;
 using PagarMe.Generic;
 using System;
 using System.IO;
@@ -9,9 +8,18 @@ namespace PagarMe.Bifrost.Certificates.Stores
 {
     class UnixStore : Store
     {
-        private static readonly String storePath = getStorePath();
-        private static readonly String certName = TLSConfig.Address;
-        private static readonly String pfxPath = Path.Combine(storePath, $"{certName}.pfx");
+        private static readonly String certificatesPath = createIfNotExists(getStorePath());
+        private static readonly String pfxPath = Path.Combine(certificatesPath, $"{TLSConfig.Address}.pfx");
+
+        private static String createIfNotExists(String path)
+        {
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
+            return path;
+        }
 
         public override X509Certificate2 GetCertificate(String subject, String issuer, StoreName storeName)
         {
@@ -26,70 +34,28 @@ namespace PagarMe.Bifrost.Certificates.Stores
         {
             Log.TryLogOnException(() =>
             {
-                addCertficate(tls);
+                executeBash("certificates-unix-install-cert-tools.sh");
+
+                using (var netCore = NetCoreCertificate.Export(tls, certificatesPath))
+                {
+                    executeBash("certificates-unix-export-cert.sh", netCore.FilePath, netCore.Filename);
+                    executeBash("certificates-unix-store-os.sh", netCore.FilePath, netCore.Filename);
+                    executeBash("certificates-unix-store-firefox.sh", netCore.FilePath, netCore.Filename);
+                }
+
                 Log.Me.Info("Finish generating");
             });
         }
 
-        private static void addCertficate(X509Certificate2 certificate)
+        private static void executeBash(String scriptName, params String[] parameters)
         {
-            var crtPath = createCrt(certificate);
-            var keyPath = createKey(certificate);
-
-            var storeScriptPath = "certificates-unix-store-add.sh";
-            var info = new FileInfo(storeScriptPath);
-
-            var installResult = Terminal.Run("sh", storeScriptPath, storePath, certName);
-            if (!installResult.Succedded)
+            var result = Terminal.Run("sh", scriptName.ArrayWith(parameters));
+            if (!result.Succedded)
             {
-                Log.Me.Error(installResult.Output);
-                Log.Me.Error(installResult.Error);
-                throw new Exception($"Could not install certificate: bash exited with code {installResult.Code}");
+                Log.Me.Error(result.Output);
+                Log.Me.Error(result.Error);
+                throw new Exception($"Could not install certificate: bash {scriptName} exited with code {result.Code}");
             }
-
-            File.Delete(crtPath);
-            File.Delete(keyPath);
-        }
-
-        private static String createCrt(X509Certificate2 certificate)
-        {
-            return createPemFile("CERTIFICATE", certificate.RawData, "crt");
-        }
-
-        public static String createKey(X509Certificate2 certificate)
-        {
-            return createPemFile("RSA PRIVATE KEY", certificate.GetPrivateKeyRawData(), "key");
-        }
-
-        private static String createPemFile(String title, Byte[] content, String extension)
-        {
-            var certPath = Path.Combine(storePath, $"{certName}.{extension}");
-
-            using (var stream = new FileStream(certPath, FileMode.Create))
-            using (var textWriter = new StreamWriter(stream))
-            {
-                var pemWriter = new PemWriter(textWriter);
-
-                var pemObj = new PemObject(title, content);
-                pemWriter.WriteObject(pemObj);
-
-                pemWriter.Writer.Flush();
-                pemWriter.Writer.Close();
-            }
-
-            return certPath;
-        }
-
-        private static String getStorePathAndCreateIfNotExists()
-        {
-            var path = getStorePath();
-
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
-
-            return path;
         }
 
         private static String getStorePath()

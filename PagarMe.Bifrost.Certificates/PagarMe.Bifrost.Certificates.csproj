@@ -66,6 +66,7 @@
     <Compile Include="Generation\CertificateChain.cs" />
     <Compile Include="Generation\CertificateGenerator.cs" />
     <Compile Include="Generation\ComposedCertificate.cs" />
+    <Compile Include="Stores\NetCoreCertificate.cs" />
     <Compile Include="Stores\Store.cs" />
     <Compile Include="Generation\TLSConfig.cs" />
     <Compile Include="Stores\UnixStore.cs" />
@@ -80,7 +81,16 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="packages.config" />
-    <Content Include="certificates-unix-store-add.sh">
+    <Content Include="certificates-unix-export-cert.sh">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="certificates-unix-install-cert-tools.sh">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="certificates-unix-store-firefox.sh">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="certificates-unix-store-os.sh">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
