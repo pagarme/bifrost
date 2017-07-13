@@ -1,6 +1,8 @@
 #!/bin/bash
 
-if [ -f "/etc/redhat-release" ]; then
+if [ -f "/etc/centos-release" ]; then
+    yum install ca-certificates
+elif [ -f "/etc/redhat-release" ]; then
     yum install -y nss-tools
 elif [ -f "/etc/debian_version" ]; then
     apt-get update
