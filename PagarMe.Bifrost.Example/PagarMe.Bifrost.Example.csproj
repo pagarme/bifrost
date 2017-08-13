@@ -74,7 +74,7 @@
       <Project>{5bfa0ca7-fce9-419c-a069-3fd2ea0ea0a0}</Project>
       <Name>PagarMe.Bifrost</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PagarMe.Mpos\PagarMe.Mpos.csproj">
+    <ProjectReference Include="..\mpos-net-sdk\PagarMe.Mpos\PagarMe.Mpos.csproj">
       <Project>{0D5CB93F-C493-4EAD-86FC-98DBFDD63D8D}</Project>
       <Name>PagarMe.Mpos</Name>
     </ProjectReference>

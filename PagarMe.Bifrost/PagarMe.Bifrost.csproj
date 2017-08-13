@@ -94,7 +94,7 @@
       <Project>{0b590c92-a6fb-4af2-a275-05042eb8f4a1}</Project>
       <Name>PagarMe.Generic</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PagarMe.Mpos\PagarMe.Mpos.csproj">
+    <ProjectReference Include="..\mpos-net-sdk\PagarMe.Mpos\PagarMe.Mpos.csproj">
       <Project>{0D5CB93F-C493-4EAD-86FC-98DBFDD63D8D}</Project>
       <Name>PagarMe.Mpos</Name>
     </ProjectReference>
