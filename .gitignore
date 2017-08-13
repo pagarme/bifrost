@@ -9,11 +9,21 @@ packages
 *.msi
 *.dylib
 *.dll
+!deps/windows-firefox/*.exe
+!deps/windows-firefox/*.dll
 
-PaymentTest/App.config
+PagarMe.Mpos.Example/App.config
 *.csproj.user
 PagarMe.AutomatedTests/App.config
 
 # OSX
 .DS_Store
 *.orig
+docs/bifrost/example-site/web.config
+docs/bifrost/service/*
+docs/mpos/build-libabecs/
+*.log
+docs/.goutputstream*
+PagarMe.Bifrost.Certificates/cert_path.txt
+
+PagarMe.Bifrost.Updates/*
