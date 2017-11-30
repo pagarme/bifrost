@@ -16,26 +16,39 @@ namespace PagarMe.Bifrost.Service
 
         protected override void OnStart(string[] args)
         {
+            Log.Me.Info("Bifrost Service Bridge");
+
+            base.OnStart(args);
+
             Log.TryLogOnException(() =>
             {
                 bridge = new MposBridge(options);
 
-                Log.Me.Info("Bifrost Service Bridge");
                 Log.Me.Info("Starting server");
                 bridge.Start();
             });
         }
 
+        protected override void OnShutdown()
+        {
+            Log.TryLogOnException(() =>
+            {
+                Log.Me.Info("Shuting down server");
+                bridge?.Stop();
+            });
+
+            base.OnShutdown();
+        }
+
         protected override void OnStop()
         {
-            if (bridge == null)
-                return;
-
             Log.TryLogOnException(() =>
             {
                 Log.Me.Info("Stopping server");
-                bridge.Stop();
+                bridge?.Stop();
             });
+
+            base.OnStop();
         }
     }
 }
