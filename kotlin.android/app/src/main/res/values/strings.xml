@@ -1,0 +1,8 @@
+<resources>
+	<string name="app_name">Bifrost</string>
+	<string name="denyPermission">Sem a permissão, não é possível listar os dispositivos bluetooth</string>
+	<string name="asset_statements" translatable="false">[{\n  \"relation\": [\"delegate_permission/common.handle_all_urls\"],\n  \"target\": {\n    \"namespace\": \"web\",\n    \"site\": \"https://darakeon.github.io\",\n  }\n}]</string>
+	<string name="choose_device">Escolher Dispositivo</string>
+	<string name="empty"/>
+	<string name="looking_for_device">Procurando dispositivos</string>
+</resources>
