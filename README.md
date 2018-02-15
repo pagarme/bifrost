@@ -18,6 +18,10 @@ You can find more details about this project [here](docs/).
 
 See [here](LICENSE.md).
 
+## Base SDK
+
+This projects works based on the [mpos .NET SDK](https://github.com/pagarme/mpos-net-sdk)
+
 ## Components
 
 ### PagarMe.Bifrost
