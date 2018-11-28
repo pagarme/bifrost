@@ -11,7 +11,7 @@ namespace PagarMe.Bifrost.Setup.Helper
         {
             var currentVersion = GetCurrentVersion();
 
-            var updatesPath = Path.Combine(MainDir, "PagarMe.Bifrost.Updates");
+            var updatesPath = getUpdatesPath();
 
             makeLinuxZip(currentVersion, updatesPath);
 
@@ -38,7 +38,7 @@ namespace PagarMe.Bifrost.Setup.Helper
         {
             var currentVersion = GetCurrentVersion();
 
-            var updatesPath = Path.Combine(MainDir, "PagarMe.Bifrost.Updates");
+            var updatesPath = getUpdatesPath();
 
             var originMsi = Path.Combine(MainDir, "bin", "Debug", "Windows", "BifrostInstaller.msi");
             var msiDestination = Path.Combine(updatesPath, $"bifrost-installer-{currentVersion}.msi");
@@ -47,6 +47,16 @@ namespace PagarMe.Bifrost.Setup.Helper
             var jsonPath = Path.Combine(updatesPath, "update-windows.json");
             var json = $@"{{ ""last_version_name"": ""{currentVersion}"" }}";
             File.WriteAllText(jsonPath, json);
+        }
+
+        private static string getUpdatesPath()
+        {
+            var updatesPath = Path.Combine(MainDir, "PagarMe.Bifrost.Updates");
+
+            if (!Directory.Exists(updatesPath))
+                Directory.CreateDirectory(updatesPath);
+
+            return updatesPath;
         }
     }
 }
