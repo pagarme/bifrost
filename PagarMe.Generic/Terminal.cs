@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 
@@ -28,6 +29,36 @@ namespace PagarMe.Generic
 
         private static Result run(String command, String[] args, Boolean requestAdm)
         {
+            Log.Me.Info($"Running {command} with args:");
+
+            for (var a = 0; a < args.Length; a++)
+            {
+                Log.Me.Info($"[{a}] {args[a]}");
+            }
+
+            var fullPath = Path.Combine(AssemblyPath, command);
+
+            if (File.Exists(fullPath))
+            {
+                var allCommands = File.ReadAllText(fullPath);
+
+                for (var a = 0; a < args.Length; a++)
+                {
+                    var param = $"%{a + 1}";
+                    var value = args[a];
+                    allCommands = allCommands.Replace(param, value);
+                }
+
+                var newLineSeparator = new[] {Environment.NewLine};
+
+                Log.Me.Info("Commands that will be executed:");
+
+                allCommands
+                    .Split(newLineSeparator, StringSplitOptions.None)
+                    .ToList()
+                    .ForEach(Log.Me.Info);
+            }
+
             var joinedArgs = String.Join(" ", args);
 
             var proc = new Process
