@@ -2,6 +2,7 @@
 using PagarMe.Generic;
 using System;
 using System.Security.Principal;
+using Version = PagarMe.Generic.Version;
 
 namespace PagarMe.Bifrost.Certificates
 {
@@ -9,6 +10,8 @@ namespace PagarMe.Bifrost.Certificates
     {
         static void Main(string[] args)
         {
+            Log.Me.Info($"Installing certificates: version {Version.Bifrost}");
+
             changeConsoleUi();
 
             if (!isAdministrator())
