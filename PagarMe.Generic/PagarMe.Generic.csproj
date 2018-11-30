@@ -47,6 +47,7 @@
     <Compile Include="StringExtension.cs" />
     <Compile Include="TaskExtension.cs" />
     <Compile Include="Terminal.cs" />
+    <Compile Include="Version.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

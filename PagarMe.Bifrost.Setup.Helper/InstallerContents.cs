@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.IO.Compression;
+using Version = PagarMe.Generic.Version;
 
 namespace PagarMe.Bifrost.Setup.Helper
 {
@@ -9,14 +10,12 @@ namespace PagarMe.Bifrost.Setup.Helper
     {
         public static void PublishLinux()
         {
-            var currentVersion = GetCurrentVersion();
-
             var updatesPath = getUpdatesPath();
 
-            makeLinuxZip(currentVersion, updatesPath);
+            makeLinuxZip(Version, updatesPath);
 
             var jsonPath = Path.Combine(updatesPath, "update-linux.json");
-            var json = $@"{{ ""last_version_name"": ""{currentVersion}"" }}";
+            var json = $@"{{ ""last_version_name"": ""{Version}"" }}";
             File.WriteAllText(jsonPath, json);
         }
 
@@ -36,16 +35,14 @@ namespace PagarMe.Bifrost.Setup.Helper
 
         public static void PublishWindows()
         {
-            var currentVersion = GetCurrentVersion();
-
             var updatesPath = getUpdatesPath();
 
             var originMsi = Path.Combine(MainDir, "bin", "Debug", "Windows", "BifrostInstaller.msi");
-            var msiDestination = Path.Combine(updatesPath, $"bifrost-installer-{currentVersion}.msi");
+            var msiDestination = Path.Combine(updatesPath, $"bifrost-installer-{Version}.msi");
             File.Copy(originMsi, msiDestination, true);
 
             var jsonPath = Path.Combine(updatesPath, "update-windows.json");
-            var json = $@"{{ ""last_version_name"": ""{currentVersion}"" }}";
+            var json = $@"{{ ""last_version_name"": ""{Version}"" }}";
             File.WriteAllText(jsonPath, json);
         }
 

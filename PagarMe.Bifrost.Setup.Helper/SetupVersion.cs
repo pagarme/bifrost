@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Text.RegularExpressions;
+using PagarMe.Generic;
 
 namespace PagarMe.Bifrost.Setup.Helper
 {
@@ -17,8 +18,6 @@ namespace PagarMe.Bifrost.Setup.Helper
 
         private static void update(string os)
         {
-            var currentVersion = GetCurrentVersion();
-
             var projName = $"PagarMe.Bifrost.{os}";
             var projPath = $@"{MainDir}{projName}\{projName}.vdproj";
             var projContent = File.ReadAllLines(projPath);
@@ -29,7 +28,7 @@ namespace PagarMe.Bifrost.Setup.Helper
                 if (projContent[l].Contains(@"""ProductVersion"""))
                 {
                     var pattern = @"(\d+\.\d+\.\d+)";
-                    var newLine = Regex.Replace(projContent[l], pattern, currentVersion);
+                    var newLine = Regex.Replace(projContent[l], pattern, Version);
 
                     if (projContent[l] != newLine)
                     {

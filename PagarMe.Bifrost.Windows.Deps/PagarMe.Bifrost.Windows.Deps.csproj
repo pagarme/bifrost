@@ -112,5 +112,11 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PagarMe.Generic\PagarMe.Generic.csproj">
+      <Project>{0b590c92-a6fb-4af2-a275-05042eb8f4a1}</Project>
+      <Name>PagarMe.Generic</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
