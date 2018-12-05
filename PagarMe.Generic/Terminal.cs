@@ -38,14 +38,16 @@ namespace PagarMe.Generic
 
             var fullPath = Path.Combine(AssemblyPath, command);
 
+            var fixedArgs = args.Select(fixArg).ToArray();
+
             if (File.Exists(fullPath))
             {
                 var allCommands = File.ReadAllText(fullPath);
 
-                for (var a = 0; a < args.Length; a++)
+                for (var a = 0; a < fixedArgs.Length; a++)
                 {
                     var param = $"%{a + 1}";
-                    var value = args[a];
+                    var value = fixedArgs[a];
                     allCommands = allCommands.Replace(param, value);
                 }
 
@@ -59,7 +61,7 @@ namespace PagarMe.Generic
                     .ForEach(Log.Me.Info);
             }
 
-            var joinedArgs = String.Join(" ", args);
+            var joinedArgs = String.Join(" ", fixedArgs);
 
             var proc = new Process
             {
@@ -82,6 +84,11 @@ namespace PagarMe.Generic
             proc.WaitForExit();
 
             return new Result(proc);
+        }
+
+        private static String fixArg(String arg)
+        {
+            return arg.Contains(" ") ? $"\"{arg}\"" : arg;
         }
 
         public class Result
