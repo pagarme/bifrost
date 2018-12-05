@@ -6,7 +6,6 @@ packages
 *.suo
 *.nupkg
 *.exe
-*.msi
 *.dylib
 *.dll
 !deps/windows-firefox/*.exe
