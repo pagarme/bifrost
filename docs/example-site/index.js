@@ -99,6 +99,8 @@ function initialize (wsWrap, responseJson) {
 
   if (deviceId != null) {
     wsWrap.initialize(encryptionKey, deviceId, baudRate)
+    // to keep from update tables
+    // wsWrap.initialize(encryptionKey, deviceId, baudRate, true)
   }
 }
 
