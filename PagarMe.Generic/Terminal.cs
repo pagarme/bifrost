@@ -40,7 +40,7 @@ namespace PagarMe.Generic
 
             var fixedArgs = args.Select(fixArg).ToArray();
 
-            if (File.Exists(fullPath))
+            if (File.Exists(fullPath) && fullPath.EndsWith(".bat"))
             {
                 var allCommands = File.ReadAllText(fullPath);
 
