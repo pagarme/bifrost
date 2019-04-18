@@ -74,8 +74,11 @@ function handleResponse (response) {
 
     case wsWrap.response.finished:
       showMessage("Pagamento feito com sucesso")
+
+      // To turn off mpos
+      wsWrap.closeContext()
       break
-      
+
     case wsWrap.response.contextClosed:
       break
 
@@ -96,6 +99,8 @@ function initialize (wsWrap, responseJson) {
 
   if (deviceId != null) {
     wsWrap.initialize(encryptionKey, deviceId, baudRate)
+    // to keep from update tables
+    // wsWrap.initialize(encryptionKey, deviceId, baudRate, true)
   }
 }
 
