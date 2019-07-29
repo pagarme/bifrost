@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using PagarMe.Generic;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace PagarMe.Bifrost.CPP
@@ -22,14 +23,7 @@ namespace PagarMe.Bifrost.CPP
         {
             Log.Me.Info("Verify C++ runtime for windows");
 
-            var archCode = Environment.Is64BitProcess ? "amd64" : "x86";
-            var guid = Environment.Is64BitProcess
-                ? "{f1e7e313-06df-4c56-96a9-99fdfd149c51}"
-                : "{c239cea1-d49e-4e16-8e87-8c055765f7ec}";
-            var keyName = $@"Installer\Dependencies\,,{archCode},14.0,bundle\Dependents\{guid}";
-
-            var value = Registry.ClassesRoot.OpenSubKey(keyName);
-            var needInstall = value == null;
+            var needInstall = verify();
 
             if (needInstall)
             {
@@ -49,6 +43,35 @@ namespace PagarMe.Bifrost.CPP
             }
 
             Log.Me.Info("C++ runtime installed");
+        }
+
+        private static Boolean verify()
+        {
+	        var mainKeyName = @"Installer\Dependencies";
+
+	        var value = Registry.ClassesRoot.OpenSubKey(mainKeyName);
+
+	        if (value == null)
+		        return true;
+
+	        var archCode = Environment.Is64BitProcess ? "amd64" : "x86";
+	        var archKeyNames = value.GetSubKeyNames()
+		        .Where(n => n.Contains(archCode))
+		        .ToList();
+
+			if (!archKeyNames.Any())
+				return true;
+
+			foreach (var archKeyName in archKeyNames)
+			{
+				var archKey = value.OpenSubKey(archKeyName);
+				var displayName = archKey?.GetValue("DisplayName");
+
+				if (displayName != null && displayName.ToString().Contains("C++"))
+					return false;
+			}
+
+			return true;
         }
     }
 }
