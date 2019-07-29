@@ -1,6 +1,7 @@
 ﻿using PagarMe.Generic;
 using System;
 using System.IO;
+using Version = System.Version;
 
 namespace PagarMe.Bifrost.Updates
 {

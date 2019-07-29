@@ -78,6 +78,10 @@
       <Project>{0D5CB93F-C493-4EAD-86FC-98DBFDD63D8D}</Project>
       <Name>PagarMe.Mpos</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PagarMe.Generic\PagarMe.Generic.csproj">
+      <Project>{0b590c92-a6fb-4af2-a275-05042eb8f4a1}</Project>
+      <Name>PagarMe.Generic</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="bifrost.ico" />

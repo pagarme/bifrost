@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.IO.Compression;
+using Version = PagarMe.Generic.Version;
 
 namespace PagarMe.Bifrost.Setup.Helper
 {
@@ -9,18 +10,16 @@ namespace PagarMe.Bifrost.Setup.Helper
     {
         public static void PublishLinux()
         {
-            var currentVersion = GetCurrentVersion();
+            var installersPath = getInstallersPath();
 
-            var updatesPath = Path.Combine(MainDir, "PagarMe.Bifrost.Updates");
+            makeLinuxZip(installersPath);
 
-            makeLinuxZip(currentVersion, updatesPath);
-
-            var jsonPath = Path.Combine(updatesPath, "update-linux.json");
-            var json = $@"{{ ""last_version_name"": ""{currentVersion}"" }}";
+            var jsonPath = Path.Combine(installersPath, "update-linux.json");
+            var json = $@"{{ ""last_version_name"": ""{Version}"" }}";
             File.WriteAllText(jsonPath, json);
         }
 
-        private static void makeLinuxZip(String currentVersion, String updatesPath)
+        private static void makeLinuxZip(String installersPath)
         {
             var originFiles = Path.Combine(MainDir, "bin", "Debug", "Linux");
 
@@ -29,24 +28,35 @@ namespace PagarMe.Bifrost.Setup.Helper
             var exe = Path.Combine(originFiles, "setup.exe");
             File.Delete(exe);
 
-            var zipDestination = Path.Combine(updatesPath, $"bifrost-installer-{currentVersion}.zip");
-            FileExtension.DeleteIfExists(zipDestination);
-            ZipFile.CreateFromDirectory(originFiles, zipDestination, CompressionLevel.Optimal, false);
+            FileExtension.Delete(installersPath, "*.zip");
+
+            var zip = Path.Combine(installersPath, $"bifrost-linux-{Version}.zip");
+            ZipFile.CreateFromDirectory(originFiles, zip, CompressionLevel.Optimal, false);
         }
 
         public static void PublishWindows()
         {
-            var currentVersion = GetCurrentVersion();
+            var installersPath = getInstallersPath();
 
-            var updatesPath = Path.Combine(MainDir, "PagarMe.Bifrost.Updates");
+            FileExtension.Delete(installersPath, "*.msi");
 
             var originMsi = Path.Combine(MainDir, "bin", "Debug", "Windows", "BifrostInstaller.msi");
-            var msiDestination = Path.Combine(updatesPath, $"bifrost-installer-{currentVersion}.msi");
-            File.Copy(originMsi, msiDestination, true);
+            var msi = Path.Combine(installersPath, $"bifrost-windows-{Version}.msi");
+            File.Copy(originMsi, msi, true);
 
-            var jsonPath = Path.Combine(updatesPath, "update-windows.json");
-            var json = $@"{{ ""last_version_name"": ""{currentVersion}"" }}";
+            var jsonPath = Path.Combine(installersPath, "update-windows.json");
+            var json = $@"{{ ""last_version_name"": ""{Version}"" }}";
             File.WriteAllText(jsonPath, json);
+        }
+
+        private static string getInstallersPath()
+        {
+            var installersPath = Path.Combine(MainDir, "installers");
+
+            if (!Directory.Exists(installersPath))
+                Directory.CreateDirectory(installersPath);
+
+            return installersPath;
         }
     }
 }

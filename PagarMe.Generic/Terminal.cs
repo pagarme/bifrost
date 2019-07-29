@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 
@@ -28,7 +29,39 @@ namespace PagarMe.Generic
 
         private static Result run(String command, String[] args, Boolean requestAdm)
         {
-            var joinedArgs = String.Join(" ", args);
+            Log.Me.Info($"Running {command} with args:");
+
+            for (var a = 0; a < args.Length; a++)
+            {
+                Log.Me.Info($"[{a}] {args[a]}");
+            }
+
+            var fullPath = Path.Combine(AssemblyPath, command);
+
+            var fixedArgs = args.Select(fixArg).ToArray();
+
+            if (File.Exists(fullPath) && fullPath.EndsWith(".bat"))
+            {
+                var allCommands = File.ReadAllText(fullPath);
+
+                for (var a = 0; a < fixedArgs.Length; a++)
+                {
+                    var param = $"%{a + 1}";
+                    var value = fixedArgs[a];
+                    allCommands = allCommands.Replace(param, value);
+                }
+
+                var newLineSeparator = new[] {Environment.NewLine};
+
+                Log.Me.Info("Commands that will be executed:");
+
+                allCommands
+                    .Split(newLineSeparator, StringSplitOptions.None)
+                    .ToList()
+                    .ForEach(Log.Me.Info);
+            }
+
+            var joinedArgs = String.Join(" ", fixedArgs);
 
             var proc = new Process
             {
@@ -51,6 +84,11 @@ namespace PagarMe.Generic
             proc.WaitForExit();
 
             return new Result(proc);
+        }
+
+        private static String fixArg(String arg)
+        {
+            return arg.Contains(" ") ? $"\"{arg}\"" : arg;
         }
 
         public class Result

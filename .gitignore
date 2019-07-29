@@ -6,7 +6,6 @@ packages
 *.suo
 *.nupkg
 *.exe
-*.msi
 *.dylib
 *.dll
 !deps/windows-firefox/*.exe
@@ -29,3 +28,5 @@ PagarMe.Bifrost.Certificates/cert_path.txt
 PagarMe.Bifrost.Updates/*
 
 *.a
+
+*.user

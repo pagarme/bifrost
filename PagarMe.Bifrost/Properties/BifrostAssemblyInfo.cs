@@ -1,5 +1,6 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
+using Version = PagarMe.Generic.Version;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
@@ -12,5 +13,5 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCulture("")]
 
 [assembly: ComVisible(false)]
-[assembly: AssemblyVersion("0.0.23")]
-[assembly: AssemblyFileVersion("0.0.23")]
+[assembly: AssemblyVersion(Version.Bifrost)]
+[assembly: AssemblyFileVersion(Version.Bifrost)]

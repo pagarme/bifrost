@@ -16,7 +16,7 @@ namespace PagarMe.Bifrost.Service
 
         protected override void OnStart(string[] args)
         {
-            Log.Me.Info("Bifrost Service Bridge");
+            Log.Me.Info($"Bifrost Service Bridge: version {Version.Bifrost}");
 
             base.OnStart(args);
 
