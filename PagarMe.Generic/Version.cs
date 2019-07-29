@@ -4,6 +4,6 @@ namespace PagarMe.Generic
 {
     public static class Version
     {
-        public const String Bifrost = "0.0.26";
+        public const String Bifrost = "0.0.27";
     }
 }
