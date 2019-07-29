@@ -4,6 +4,7 @@ using PagarMe.Bifrost.Commands;
 using mpos = PagarMe.Mpos.Mpos;
 using PagarMe.Mpos.Devices;
 using PagarMe.Mpos;
+using PagarMe.Mpos.Entities;
 
 namespace PagarMe.Bifrost.Providers
 {

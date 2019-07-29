@@ -29,8 +29,8 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.4.4.11\lib\net45\NLog.dll</HintPath>
@@ -86,6 +86,10 @@
   <ItemGroup />
   <ItemGroup />
   <ItemGroup>
+    <ProjectReference Include="..\mpos-net-sdk\PagarMe.Mpos\PagarMe.Mpos.csproj">
+      <Project>{0d5cb93f-c493-4ead-86fc-98dbfdd63d8d}</Project>
+      <Name>PagarMe.Mpos</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PagarMe.Bifrost.Certificates\PagarMe.Bifrost.Certificates.csproj">
       <Project>{751e182c-306a-4d2b-9fe6-98d09cd53753}</Project>
       <Name>PagarMe.Bifrost.Certificates</Name>
@@ -93,10 +97,6 @@
     <ProjectReference Include="..\PagarMe.Generic\PagarMe.Generic.csproj">
       <Project>{0b590c92-a6fb-4af2-a275-05042eb8f4a1}</Project>
       <Name>PagarMe.Generic</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\mpos-net-sdk\PagarMe.Mpos\PagarMe.Mpos.csproj">
-      <Project>{0D5CB93F-C493-4EAD-86FC-98DBFDD63D8D}</Project>
-      <Name>PagarMe.Mpos</Name>
     </ProjectReference>
     <ProjectReference Include="..\PagarMe.Mpos\PagarMe.Mpos.csproj">
       <Project>{0d5cb93f-c493-4ead-86fc-98dbfdd63d8d}</Project>

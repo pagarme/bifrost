@@ -1,5 +1,6 @@
 using PagarMe.Mpos;
 using System.Collections.Generic;
+using PagarMe.Mpos.Entities;
 
 namespace PagarMe.Bifrost.Commands
 {
