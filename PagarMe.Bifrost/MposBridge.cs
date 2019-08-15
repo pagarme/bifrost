@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Net;
 using PagarMe.Bifrost.Providers;
 using PagarMe.Bifrost.WebSocket;
-using PagarMe.Mpos.Devices;
 using WebSocketSharp.Server;
 using PagarMe.Generic;
 using PagarMe.Bifrost.Certificates.Generation;
 using System.Linq;
 using System.Threading.Tasks;
+using PagarMe.Bifrost.Devices;
 
 namespace PagarMe.Bifrost
 {

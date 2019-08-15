@@ -1,4 +1,4 @@
-using PagarMe.Mpos;
+using PagarMe.Mpos.Entities;
 
 namespace PagarMe.Bifrost.Commands
 {

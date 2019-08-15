@@ -1,6 +1,6 @@
-﻿using PagarMe.Mpos;
-using PagarMe.Mpos.Devices;
-using System;
+﻿using System;
+using PagarMe.Bifrost.Devices;
+using PagarMe.Mpos.Entities;
 
 namespace PagarMe.Bifrost.Commands
 {

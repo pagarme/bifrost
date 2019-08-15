@@ -3,6 +3,7 @@ using PagarMe.Bifrost.Commands;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using PagarMe.Mpos.Entities;
 using WebSocketSharp;
 using WebSocketSharp.Server;
 using log = PagarMe.Generic.Log;
@@ -198,14 +199,14 @@ namespace PagarMe.Bifrost.WebSocket
             var process = await context.ProcessPayment(request.Process);
             response.Process = process.Result;
 
-            if (process.Result.Status == Mpos.PaymentStatus.Accepted)
+            if (process.Result.ResultCode == MposResultCode.Ok)
             {
                 response.ResponseType = PaymentResponse.Type.Processed;
             }
             else
             {
                 response.ResponseType = PaymentResponse.Type.Error;
-                response.Error = $"Transaction {process.Result.Status}";
+                response.Error = $"Transaction {process.Result.ResultCode}";
             }
         }
 

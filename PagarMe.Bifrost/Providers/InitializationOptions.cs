@@ -1,5 +1,5 @@
-using PagarMe.Mpos.Devices;
 using System;
+using PagarMe.Bifrost.Devices;
 
 namespace PagarMe.Bifrost.Providers
 {

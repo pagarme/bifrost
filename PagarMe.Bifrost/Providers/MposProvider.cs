@@ -1,9 +1,9 @@
 using System;
 using System.Threading.Tasks;
 using PagarMe.Bifrost.Commands;
-using mpos = PagarMe.Mpos.Mpos;
-using PagarMe.Mpos.Devices;
-using PagarMe.Mpos;
+using PagarMe.Bifrost.Devices;
+using PagarMe.Mpos.Entities;
+using mpos = PagarMe.Mpos.v1.Mpos;
 
 namespace PagarMe.Bifrost.Providers
 {
@@ -24,7 +24,7 @@ namespace PagarMe.Bifrost.Providers
 
             onError = options.OnError;
 
-            return Task.Run(mpos.Initialize);
+            return mpos.Initialize();
         }
 
         private void errored(object sender, int error)

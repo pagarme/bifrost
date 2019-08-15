@@ -36,28 +36,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\deps\mpos\mpos32.dll">
-      <Link>mpos32.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\deps\mpos\mpos64.dll">
-      <Link>mpos64.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\deps\mpos\sqlite3_32.dll">
-      <Link>sqlite3_32.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\deps\mpos\sqlite3_64.dll">
-      <Link>sqlite3_64.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\deps\mpos\tms32.dll">
-      <Link>tms32.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\deps\mpos\tms64.dll">
-      <Link>tms64.dll</Link>
+    <Content Include="..\deps\mpos\libabecs.dll">
+      <Link>libabecs.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="..\deps\vc_redist.x64.exe">

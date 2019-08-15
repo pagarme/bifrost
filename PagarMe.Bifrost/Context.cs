@@ -5,8 +5,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using PagarMe.Bifrost.Commands;
+using PagarMe.Bifrost.Devices;
 using PagarMe.Bifrost.Providers;
-using PagarMe.Mpos.Devices;
 using PagarMe.Generic;
 
 namespace PagarMe.Bifrost

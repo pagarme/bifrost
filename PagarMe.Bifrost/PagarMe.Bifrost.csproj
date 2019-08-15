@@ -17,7 +17,7 @@
     <OutputPath>..\bin\Debug</OutputPath>
     <DefineConstants>DEBUG;</DefineConstants>
     <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
@@ -46,6 +46,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\deps\mpos\PagarMe.Mpos.dll</HintPath>
     </Reference>
+    <Reference Include="System" />
     <Reference Include="System.Management" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="mscorlib" />
@@ -58,7 +59,7 @@
     <Compile Include="..\PagarMe.Generic\Properties\PagarMeAssemblyInfo.cs">
       <Link>Properties\PagarMeAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="C++\Runtime4Windows.cs" />
+    <Compile Include="CPP\Runtime4Windows.cs" />
     <Compile Include="Commands\PaymentRequest.cs" />
     <Compile Include="Commands\PaymentResponse.cs" />
     <Compile Include="Commands\TypeExtension.cs" />
@@ -67,6 +68,10 @@
     <Compile Include="Commands\DisplayMessageRequest.cs" />
     <Compile Include="Commands\FinishPaymentRequest.cs" />
     <Compile Include="Commands\InitializeRequest.cs" />
+    <Compile Include="Devices\DeviceKind.cs" />
+    <Compile Include="Devices\DeviceManager.cs" />
+    <Compile Include="Devices\IDevice.cs" />
+    <Compile Include="Devices\SerialDevice.cs" />
     <Compile Include="MposBridge.cs" />
     <Compile Include="Commands\ProcessPaymentRequest.cs" />
     <Compile Include="Commands\ProcessPaymentResponse.cs" />
@@ -97,10 +102,6 @@
     <ProjectReference Include="..\PagarMe.Generic\PagarMe.Generic.csproj">
       <Project>{0b590c92-a6fb-4af2-a275-05042eb8f4a1}</Project>
       <Name>PagarMe.Generic</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\mpos-net-sdk\PagarMe.Mpos\PagarMe.Mpos.csproj">
-      <Project>{0D5CB93F-C493-4EAD-86FC-98DBFDD63D8D}</Project>
-      <Name>PagarMe.Mpos</Name>
     </ProjectReference>
     <ProjectReference Include="..\PagarMe.Mpos\PagarMe.Mpos.csproj">
       <Project>{0d5cb93f-c493-4ead-86fc-98dbfdd63d8d}</Project>
