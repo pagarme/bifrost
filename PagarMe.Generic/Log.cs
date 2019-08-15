@@ -36,7 +36,6 @@ namespace PagarMe.Generic
             }
         }
 
-        public static async Task TryLogOnExceptionAsync(Func<Task> action) { await TryLogOnExceptionAsync(action, null); }
         public static async Task TryLogOnExceptionAsync(Func<Task> action, Action<Exception> processInsteadThrow)
         {
             try
@@ -111,7 +110,8 @@ namespace PagarMe.Generic
 
             var logEventInfo = new LogEventInfo { TimeStamp = DateTime.Now };
             var relativeFileName = fileTarget.FileName.Render(logEventInfo);
-            return relativeFileName;
+            return relativeFileName
+	            .Replace('?', Path.DirectorySeparatorChar);
         }
     }
 }
