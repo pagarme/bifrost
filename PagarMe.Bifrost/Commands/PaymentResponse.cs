@@ -4,9 +4,9 @@ using PagarMe.Mpos.Entities;
 
 namespace PagarMe.Bifrost.Commands
 {
-    public class PaymentResponse
+    internal class PaymentResponse
     {
-        public IDevice[] DeviceList { get; internal set; }
+        public SerialDevice[] DeviceList { get; internal set; }
         public PaymentResult Process { get; internal set; }
         public StatusResponse Status { get; internal set; }
 

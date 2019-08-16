@@ -6,26 +6,26 @@ using System.Threading.Tasks;
 
 namespace PagarMe.Bifrost.Devices
 {
-    public class DeviceManager : IDisposable
+    internal class DeviceManager : IDisposable
     {
         private bool disposed;
-        private Action<Action> tryLogOnException;
-        private Dictionary<string, IDevice> devices;
+        private readonly Action<Action> tryLogOnException;
+        private Dictionary<string, SerialDevice> devices;
 
         public DeviceManager(Action<Action> tryLogOnException = null)
         {
             this.tryLogOnException = tryLogOnException ?? noLog;
-            devices = new Dictionary<string, IDevice>();
+            devices = new Dictionary<string, SerialDevice>();
             updateTask();
         }
 
-        public IDevice GetById(string deviceId)
+        public SerialDevice GetById(string deviceId)
         {
             lock (devices)
                 return devices[deviceId];
         }
 
-        public IDevice[] FindAvailableDevices()
+        public SerialDevice[] FindAvailableDevices()
         {
             lock (devices)
                 return devices.Values.ToArray();
@@ -71,11 +71,11 @@ namespace PagarMe.Bifrost.Devices
         }
 
         // TODO: Need to improve this to check if it's a new device on the same port
-        private IDevice getBySerialPort(string port)
+        private SerialDevice getBySerialPort(string port)
         {
             foreach (var device in devices.Values)
             {
-                if (device is SerialDevice && ((SerialDevice)device).Port == port)
+                if (device.Port == port)
                     return device;
             }
 

@@ -9,12 +9,12 @@ using PagarMe.Mpos.Entities;
 
 namespace PagarMe.Bifrost
 {
-    public class Context : IDisposable
+    internal class Context : IDisposable
     {
         private readonly MposBridge bridge;
         private readonly SemaphoreSlim locker;
-        private IProvider provider;
-        private IDevice device;
+        private MposProvider provider;
+        private SerialDevice device;
 
         private ContextStatus status;
 
@@ -28,7 +28,7 @@ namespace PagarMe.Bifrost
 
 		internal String DeviceId => device?.Id;
 
-        public Context(MposBridge bridge, IProvider provider, Action<String> sendErrorMessage)
+        public Context(MposBridge bridge, MposProvider provider, Action<String> sendErrorMessage)
         {
             this.bridge = bridge;
             this.provider = provider;
@@ -37,7 +37,7 @@ namespace PagarMe.Bifrost
             status = ContextStatus.Uninitialized;
         }
 
-        public Task<IDevice[]> ListDevices()
+        public Task<SerialDevice[]> ListDevices()
         {
             var devices = bridge.DeviceManager.FindAvailableDevices();
             return Task.FromResult(devices);

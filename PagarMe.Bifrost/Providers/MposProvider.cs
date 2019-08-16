@@ -7,10 +7,10 @@ using mpos = PagarMe.Mpos.Mpos;
 
 namespace PagarMe.Bifrost.Providers
 {
-    public class MposProvider : IProvider
+    internal class MposProvider
     {
         private mpos mpos;
-        private IDevice device;
+        private SerialDevice device;
         public async Task<MposResultCode> Open(InitializationOptions options)
         {
             device = options.Device;

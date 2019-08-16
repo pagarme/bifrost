@@ -4,7 +4,7 @@ using System.IO.Ports;
 
 namespace PagarMe.Bifrost.Devices
 {
-    internal class SerialDevice : IDevice
+    internal class SerialDevice
     {
         private SerialPort port;
 
@@ -15,14 +15,6 @@ namespace PagarMe.Bifrost.Devices
         public String Name { get; set; }
 
         public String Manufacturer { get; set; }
-
-        public DeviceKind Kind
-        {
-            get
-            {
-                return DeviceKind.Serial;
-            }
-        }
 
         public SerialDevice(String port)
         {

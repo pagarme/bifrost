@@ -24,7 +24,7 @@ namespace PagarMe.Bifrost
         private BifrostBehavior behavior;
 
         public Options Options { get; }
-        public DeviceManager DeviceManager { get; }
+        internal DeviceManager DeviceManager { get; }
 
 		public MposBridge(Options options)
         {
