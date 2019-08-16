@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using CommandLine;
 using PagarMe.Generic;
 
@@ -7,33 +9,44 @@ namespace PagarMe.Bifrost
 {
     public class Options
     {
-        [Option('p', "port", Required = false, HelpText = "Port to bind the server", DefaultValue = 2000)]
+        [Option('p', "port", Required = false, HelpText = "Port to bind the server", Default = 2000)]
         public int BindPort { get; set; }
 
-        [Option('b', "bind", Required = false, HelpText = "Address to bind the server", DefaultValue = "localhost")]
+        [Option('b', "bind", Required = false, HelpText = "Address to bind the server", Default = "localhost")]
         public string BindAddress { get; set; }
 
-        [Option('e', "endpoint", Required = false, HelpText = "Pagar.me's API endpoint",
-            DefaultValue = "https://api.pagar.me/1/")]
+        [Option('e', "endpoint", Required = false, HelpText = "Pagar.me's API endpoint", Default = "https://api.pagar.me/1/")]
         public string Endpoint { get; set; }
 
-        [Option('d', "data-path", Required = false, HelpText = "Database path", DefaultValue = "<appdata>")]
+        [Option('d', "data-path", Required = false, HelpText = "Database path", Default = "<appdata>")]
         public string DataPath { get; set; }
 
-        [Option('u', "update-address", Required = false, HelpText = "Address check for updates", DefaultValue = "http://localhost:2001")]
+        [Option('u', "update-address", Required = false, HelpText = "Address check for updates", Default = "http://localhost:2001")]
         public string UpdateAddress { get; set; }
-        
-        public Boolean ParsedSuccessfully { get; private set; }
 
-        private Options() { }
+        public Boolean Fail => Errors?.Any() ?? false;
+
+		public IEnumerable<Error> Errors { get; private set; }
+
+        public Options() { }
 
         public static Options Get(String[] args)
         {
             var options = new Options();
 
-            options.ParsedSuccessfully = Parser.Default.ParseArgumentsStrict(args, options);
+            var parser = Parser.Default.ParseArguments<Options>(args);
 
-            if (!options.ParsedSuccessfully)
+			parser.WithParsed(o =>
+			{
+				options = o;
+			});
+
+			parser.WithNotParsed(e =>
+			{
+				options.Errors = e;
+			});
+
+            if (options.Fail)
             {
                 Log.Me.Warn("Could not get parameters. Verify parameters passed.");
             }

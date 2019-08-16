@@ -11,7 +11,7 @@ namespace PagarMe.Bifrost.Example
         {
             options = Options.Get(args);
 
-            if (!options.ParsedSuccessfully)
+            if (options.Fail)
                 return 1;
 
             var bridge = new MposBridge(options);
