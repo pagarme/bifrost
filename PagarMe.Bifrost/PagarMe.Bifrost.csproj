@@ -103,10 +103,6 @@
       <Project>{0b590c92-a6fb-4af2-a275-05042eb8f4a1}</Project>
       <Name>PagarMe.Generic</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PagarMe.Mpos\PagarMe.Mpos.csproj">
-      <Project>{0d5cb93f-c493-4ead-86fc-98dbfdd63d8d}</Project>
-      <Name>PagarMe.Mpos</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

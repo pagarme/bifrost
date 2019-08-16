@@ -59,7 +59,7 @@ namespace PagarMe.Bifrost.WebSocket
 
         private async Task handleMessage(PaymentRequest request)
         {
-            var context = mposBridge.GetContext(request.ContextId);
+            var context = mposBridge.GetContext(request);
             var response = request.GenerateResponse();
 
             if (context == null)
@@ -108,7 +108,7 @@ namespace PagarMe.Bifrost.WebSocket
                     break;
 
                 case PaymentRequest.Type.Status:
-                    await status(context, response);
+                    setStatus(context, response);
                     break;
 
                 case PaymentRequest.Type.CloseContext:
@@ -172,13 +172,11 @@ namespace PagarMe.Bifrost.WebSocket
                 return;
             }
 
-            var initialized = await context.Initialize(initialize, onError);
+			var initialized = await context.Initialize(initialize);
 
             if (initialized.HasValue)
             {
-                response.ResponseType = initialized.Value
-                    ? PaymentResponse.Type.Initialized
-                    : PaymentResponse.Type.AlreadyInitialized;
+                response.ResponseType = initialized.Value;
             }
             else
             {
@@ -187,9 +185,9 @@ namespace PagarMe.Bifrost.WebSocket
             }
         }
 
-        private async Task status(Context context, PaymentResponse response)
+        private void setStatus(Context context, PaymentResponse response)
         {
-            var result = await context.GetStatus();
+            var result = context.GetStatus();
             response.Status = result;
             response.ResponseType = PaymentResponse.Type.Status;
         }
@@ -212,20 +210,20 @@ namespace PagarMe.Bifrost.WebSocket
 
         private async Task finish(Context context, PaymentRequest request, PaymentResponse response)
         {
-            await context.FinishPayment(request.Finish);
-            response.ResponseType = PaymentResponse.Type.Finished;
+	        response.ResponseType = 
+		        await context.FinishPayment(request.Finish);
         }
 
         private async Task displayMessage(Context context, PaymentRequest request, PaymentResponse response)
         {
-            await context.DisplayMessage(request.DisplayMessage);
-            response.ResponseType = PaymentResponse.Type.MessageDisplayed;
+	        response.ResponseType = 
+		        await context.DisplayMessage(request.DisplayMessage);
         }
 
         private async Task close(Context context, PaymentRequest request, PaymentResponse response)
         {
-            await mposBridge.KillContext(request.ContextId);
-            response.ResponseType = PaymentResponse.Type.ContextClosed;
+	        response.ResponseType = 
+		        await mposBridge.KillContext(request);
         }
 
 
@@ -233,15 +231,10 @@ namespace PagarMe.Bifrost.WebSocket
         {
             log.Me.Error(e.Message);
             log.Me.Error(e.Exception);
-            onError(e.Message);
+            OnError(e.Message);
         }
 
-        private void onError(Int32 errorCode)
-        {
-            onError($"Error: {errorCode}");
-        }
-
-        private void onError(String message)
+        internal void OnError(String message)
         {
             var response = new PaymentResponse
             {
@@ -267,7 +260,5 @@ namespace PagarMe.Bifrost.WebSocket
                 log.Me.Warn($"Could not send response of {response.ResponseType}, websocket connection not opened.");
             }
         }
-
-        
     }
 }

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using PagarMe.Bifrost.Commands;
 using PagarMe.Bifrost.Devices;
 using PagarMe.Mpos.Entities;
-using mpos = PagarMe.Mpos.v1.Mpos;
+using mpos = PagarMe.Mpos.Mpos;
 
 namespace PagarMe.Bifrost.Providers
 {
@@ -11,47 +11,34 @@ namespace PagarMe.Bifrost.Providers
     {
         private mpos mpos;
         private IDevice device;
-        private Action<Int32> onError;
-
-        public Task Open(InitializationOptions options)
+        public async Task<MposResultCode> Open(InitializationOptions options)
         {
             device = options.Device;
             var stream = device.Open(options.BaudRate);
 
-            mpos = new mpos(stream, options.EncryptionKey, options.StoragePath);
+            mpos = new mpos(stream, options.EncryptionKey);
 
-            mpos.Errored += errored;
-
-            onError = options.OnError;
-
-            return mpos.Initialize();
+            return await mpos.Initialize();
         }
 
-        private void errored(object sender, int error)
+        public async Task<MposResultCode> SynchronizeTables()
         {
-            onError(error);
+            return await mpos.SynchronizeTables();
         }
 
-
-        public Task SynchronizeTables(bool force)
+        public async Task<MposResultCode> DisplayMessage(string message)
         {
-            return mpos.SynchronizeTables(force);
-        }
-
-        public Task DisplayMessage(string message)
-        {
-            return Task.Run(() => mpos.Display(message));
+            return await mpos.Display(message);
         }
 
         public async Task<ProcessPaymentResponse> ProcessPayment(ProcessPaymentRequest request)
         {
-            var paymentMethod = request.MagstripePaymentMethod;
+            var paymentMethod = request.PaymentMethod;
 
             if (paymentMethod == 0)
                 paymentMethod = PaymentMethod.Credit;
 
-            var response = await mpos.ProcessPayment(request.Amount, request.Applications,
-                                                      paymentMethod);
+            var response = await mpos.ProcessPayment(request.Amount, paymentMethod);
 
             return new ProcessPaymentResponse
             {
@@ -59,23 +46,23 @@ namespace PagarMe.Bifrost.Providers
             };
         }
 
-        public Task FinishPayment(FinishPaymentRequest request)
+        public async Task<MposResultCode> FinishPayment(FinishPaymentRequest request)
         {
-            return mpos.FinishTransaction(request.Success, request.ResponseCode, request.EmvData);
+            return await mpos.FinishTransaction(
+	            request.ResponseCode.ToString("0000"),
+	            request.EmvData
+	        );
         }
 
-        public Task CancelOperation()
+        public async Task<MposResultCode> Close()
         {
-            mpos.Cancel();
-
-            return Task.FromResult(0);
+            return await mpos.Close();
         }
 
-
-        public async Task Close()
-        {
-            await mpos.Close();
-        }
+        public String GetMessage(MposResultCode code)
+		{
+			return mpos.GetMessage(code);
+		}
 
         public void Dispose()
         {

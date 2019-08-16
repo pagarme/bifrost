@@ -8,6 +8,7 @@ using PagarMe.Generic;
 using PagarMe.Bifrost.Certificates.Generation;
 using System.Linq;
 using System.Threading.Tasks;
+using PagarMe.Bifrost.Commands;
 using PagarMe.Bifrost.Devices;
 
 namespace PagarMe.Bifrost
@@ -19,26 +20,23 @@ namespace PagarMe.Bifrost
 
         private static Boolean contextsLocked = false;
 
-        private readonly DeviceManager deviceManager;
-        private readonly Options options;
-
         private WebSocketServer server;
+        private BifrostBehavior behavior;
 
-        public Options Options { get { return options; } }
+        public Options Options { get; }
+        public DeviceManager DeviceManager { get; }
 
-        public DeviceManager DeviceManager { get { return deviceManager; } }
-
-        public MposBridge(Options options)
+		public MposBridge(Options options)
         {
-            this.options = options;
-            deviceManager = new DeviceManager(Log.TryLogOnException);
+            Options = options;
+            DeviceManager = new DeviceManager(Log.TryLogOnException);
         }
 
 
         public void Start(Boolean ssl = true)
         {
             var addresses = Dns.GetHostAddresses(Options.BindAddress);
-            server = new WebSocketServer(addresses[0], options.BindPort, ssl);
+            server = new WebSocketServer(addresses[0], Options.BindPort, ssl);
 
             TLSConfig.Address = Options.BindAddress;
 
@@ -55,7 +53,8 @@ namespace PagarMe.Bifrost
 
             server.Log.File = Log.GetLogFilePath();
 
-            server.AddWebSocketService("/mpos", () => new BifrostBehavior(this));
+			behavior = new BifrostBehavior(this);
+            server.AddWebSocketService("/mpos", () => behavior);
             server.Start();
         }
 
@@ -66,7 +65,7 @@ namespace PagarMe.Bifrost
 
         public void Dispose()
         {
-            deviceManager.Dispose();
+            DeviceManager.Dispose();
         }
 
         public String GetDeviceContextName(String deviceId)
@@ -80,67 +79,55 @@ namespace PagarMe.Bifrost
             }
         }
 
-        public Context GetContext(string name)
+        internal Context GetContext(PaymentRequest request)
         {
             if (contextsLocked) return null;
 
-            name = normalize(name);
-
-            Context context;
+            var name = normalize(request.ContextId);
 
             lock (contexts)
             {
-                if (!contexts.TryGetValue(name, out context))
-                {
-                    var provider = new MposProvider();
+				if (contexts.ContainsKey(name))
+					return contexts[name];
 
-                    context = new Context(this, provider);
-                    contexts[name] = context;
-                }
+				var allowed = new[]
+				{
+					PaymentRequest.Type.Initialize,
+					PaymentRequest.Type.ListDevices,
+				};
+
+				if (allowed.Contains(request.RequestType))
+	            {
+		            var provider = new MposProvider();
+
+		            var context = new Context(this, provider, behavior.OnError);
+		            contexts[name] = context;
+
+		            return context;
+	            }
             }
 
-            return context;
+            return null;
         }
 
-        public async Task KillContext(string name)
+        internal async Task<PaymentResponse.Type> KillContext(PaymentRequest request)
         {
-            name = normalize(name);
-            Context context = null;
+            var context = GetContext(request);
 
-            lock (contexts)
+			if (context != null &&
+			    context.GetStatus().Code != ContextStatus.Closed)
             {
-                if (contexts.ContainsKey(name))
-                {
-                    context = contexts[name];
-                    contexts.Remove(name);
-                }
-            }
-
-            if (context != null)
-            {
-                await context.Close();
+                var result = await context.Close();
                 context.Dispose();
+                return result;
             }
-        }
 
-        public static Boolean LockContexts()
-        {
-            lock (contexts)
-            {
-                if (contexts.Any(c => c.Value.IsInUse()))
-                {
-                    return false;
-                }
-
-                contextsLocked = true;
-
-                return true;
-            }
+            return PaymentResponse.Type.ContextClosed;
         }
 
         private string normalize(string name)
         {
-            return name == null || name == "" ? "<default>" : name;
+            return string.IsNullOrEmpty(name) ? "<default>" : name;
         }
 
 
