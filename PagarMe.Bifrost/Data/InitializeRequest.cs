@@ -1,7 +1,7 @@
 using System;
 using System.Threading;
 
-namespace PagarMe.Bifrost.Commands
+namespace PagarMe.Bifrost.Data
 {
     public class InitializeRequest
     {

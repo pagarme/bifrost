@@ -1,8 +1,7 @@
-﻿using System;
-using PagarMe.Bifrost.Devices;
+using System;
 using PagarMe.Mpos.Entities;
 
-namespace PagarMe.Bifrost.Commands
+namespace PagarMe.Bifrost.Data
 {
     internal class PaymentResponse
     {

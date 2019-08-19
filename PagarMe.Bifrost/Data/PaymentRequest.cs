@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 
-namespace PagarMe.Bifrost.Commands
+namespace PagarMe.Bifrost.Data
 {
     internal class PaymentRequest
     {

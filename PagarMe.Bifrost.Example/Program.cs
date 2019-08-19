@@ -14,7 +14,7 @@ namespace PagarMe.Bifrost.Example
             if (options.Fail)
                 return 1;
 
-            var bridge = new MposBridge(options);
+            var bridge = new ServiceHandler(options);
 
             var running = true;
             Console.CancelKeyPress += (sender, e) => running = false;

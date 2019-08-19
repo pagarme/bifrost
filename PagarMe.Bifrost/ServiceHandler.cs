@@ -1,19 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Net;
-using PagarMe.Bifrost.Providers;
-using PagarMe.Bifrost.WebSocket;
 using WebSocketSharp.Server;
 using PagarMe.Generic;
 using PagarMe.Bifrost.Certificates.Generation;
 using System.Linq;
 using System.Threading.Tasks;
-using PagarMe.Bifrost.Commands;
-using PagarMe.Bifrost.Devices;
+using PagarMe.Bifrost.Data;
 
 namespace PagarMe.Bifrost
 {
-    public class MposBridge : IDisposable
+    public class ServiceHandler : IDisposable
     {
         private static readonly Dictionary<string, Context> contexts
             = new Dictionary<string, Context>();
@@ -21,12 +18,12 @@ namespace PagarMe.Bifrost
         private static Boolean contextsLocked = false;
 
         private WebSocketServer server;
-        private BifrostBehavior behavior;
+        private MessagesHandler messagesHandler;
 
         public Options Options { get; }
         internal DeviceManager DeviceManager { get; }
 
-		public MposBridge(Options options)
+		public ServiceHandler(Options options)
         {
             Options = options;
             DeviceManager = new DeviceManager(Log.TryLogOnException);
@@ -53,8 +50,8 @@ namespace PagarMe.Bifrost
 
             server.Log.File = Log.GetLogFilePath();
 
-			behavior = new BifrostBehavior(this);
-            server.AddWebSocketService("/mpos", () => behavior);
+			messagesHandler = new MessagesHandler(this);
+            server.AddWebSocketService("/mpos", () => messagesHandler);
             server.Start();
         }
 
@@ -98,9 +95,7 @@ namespace PagarMe.Bifrost
 
 				if (allowed.Contains(request.RequestType))
 	            {
-		            var provider = new MposProvider();
-
-		            var context = new Context(this, provider, behavior.OnError);
+		            var context = new Context(this, messagesHandler.OnError);
 		            contexts[name] = context;
 
 		            return context;
@@ -129,7 +124,5 @@ namespace PagarMe.Bifrost
         {
             return string.IsNullOrEmpty(name) ? "<default>" : name;
         }
-
-
     }
 }

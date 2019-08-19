@@ -6,7 +6,7 @@ namespace PagarMe.Bifrost.Service
     public partial class BifrostService : ServiceBase
     {
         private readonly Options options;
-        private MposBridge bridge;
+        private ServiceHandler bridge;
 
         public BifrostService(Options options)
         {
@@ -22,7 +22,7 @@ namespace PagarMe.Bifrost.Service
 
             Log.TryLogOnException(() =>
             {
-                bridge = new MposBridge(options);
+                bridge = new ServiceHandler(options);
 
                 Log.Me.Info("Starting server");
                 bridge.Start();

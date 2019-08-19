@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.IO.Ports;
 using System.Linq;
 using System.Threading.Tasks;
+using PagarMe.Bifrost.Data;
 
-namespace PagarMe.Bifrost.Devices
+namespace PagarMe.Bifrost
 {
     internal class DeviceManager : IDisposable
     {

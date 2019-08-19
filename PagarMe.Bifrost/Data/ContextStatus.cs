@@ -1,4 +1,4 @@
-namespace PagarMe.Bifrost
+namespace PagarMe.Bifrost.Data
 {
     public enum ContextStatus
     {

@@ -1,7 +1,7 @@
-﻿using System;
-using Type = PagarMe.Bifrost.Commands.PaymentRequest.Type;
+using System;
+using Type = PagarMe.Bifrost.Data.PaymentRequest.Type;
 
-namespace PagarMe.Bifrost.Commands
+namespace PagarMe.Bifrost.Data
 {
     public static class TypeExtension
     {

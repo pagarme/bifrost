@@ -1,6 +1,6 @@
 using PagarMe.Mpos.Entities;
 
-namespace PagarMe.Bifrost.Commands
+namespace PagarMe.Bifrost.Data
 {
     public class ProcessPaymentResponse
     {

@@ -1,4 +1,4 @@
-namespace PagarMe.Bifrost.Commands
+namespace PagarMe.Bifrost.Data
 {
     public class FinishPaymentRequest
     {

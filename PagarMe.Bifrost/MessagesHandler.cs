@@ -1,22 +1,30 @@
-using Newtonsoft.Json;
-using PagarMe.Bifrost.Commands;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using PagarMe.Bifrost.Data;
+using PagarMe.Bifrost.Util;
 using PagarMe.Mpos.Entities;
 using WebSocketSharp;
 using WebSocketSharp.Server;
 using log = PagarMe.Generic.Log;
+using mposFunc = System.Func<
+    PagarMe.Bifrost.Context,
+    PagarMe.Bifrost.Data.PaymentRequest,
+    PagarMe.Bifrost.Data.PaymentResponse,
+    System.Threading.Tasks.Task
+>;
 
-namespace PagarMe.Bifrost.WebSocket
+namespace PagarMe.Bifrost
 {
-    internal class BifrostBehavior : WebSocketBehavior
+    internal class MessagesHandler : WebSocketBehavior
     {
-        private readonly MposBridge mposBridge;
+        private readonly ServiceHandler serviceHandler;
 
-        public BifrostBehavior(MposBridge mposBridge)
+        public MessagesHandler(ServiceHandler serviceHandler)
         {
-            this.mposBridge = mposBridge;
+            this.serviceHandler = serviceHandler;
             IgnoreExtensions = true;
         }
 
@@ -59,7 +67,7 @@ namespace PagarMe.Bifrost.WebSocket
 
         private async Task handleMessage(PaymentRequest request)
         {
-            var context = mposBridge.GetContext(request);
+            var context = serviceHandler.GetContext(request);
             var response = request.GenerateResponse();
 
             if (context == null)
@@ -85,39 +93,26 @@ namespace PagarMe.Bifrost.WebSocket
             if (!keepProcessing)
                 return;
 
-            switch (request.RequestType)
+            var type = request.RequestType;
+
+            var actions = new Dictionary<PaymentRequest.Type, mposFunc>
             {
-                case PaymentRequest.Type.ListDevices:
-                    await getDeviceList(context, response);
-                    break;
+                {PaymentRequest.Type.ListDevices, getDeviceList},
+                {PaymentRequest.Type.Initialize, initialize},
+                {PaymentRequest.Type.Process, process},
+                {PaymentRequest.Type.Finish, finish},
+                {PaymentRequest.Type.DisplayMessage, displayMessage},
+                {PaymentRequest.Type.Status, setStatus},
+                {PaymentRequest.Type.CloseContext, close},
+            };
 
-                case PaymentRequest.Type.Initialize:
-                    await initialize(context, request, response);
-                    break;
-
-                case PaymentRequest.Type.Process:
-                    await process(context, request, response);
-                    break;
-
-                case PaymentRequest.Type.Finish:
-                    await finish(context, request, response);
-                    break;
-
-                case PaymentRequest.Type.DisplayMessage:
-                    await displayMessage(context, request, response);
-                    break;
-
-                case PaymentRequest.Type.Status:
-                    setStatus(context, response);
-                    break;
-
-                case PaymentRequest.Type.CloseContext:
-                    await close(context, request, response);
-                    break;
-
-                default:
-                    response.ResponseType = PaymentResponse.Type.UnknownCommand;
-                    break;
+            if (actions.ContainsKey(type))
+            {
+                await actions[type](context, request, response);
+            }
+            else
+            {
+                response.ResponseType = PaymentResponse.Type.UnknownCommand;
             }
         }
 
@@ -153,7 +148,7 @@ namespace PagarMe.Bifrost.WebSocket
             }
         }
 
-        private async Task getDeviceList(Context context, PaymentResponse response)
+        private async Task getDeviceList(Context context, PaymentRequest request, PaymentResponse response)
         {
             response.DeviceList = await context.ListDevices();
             response.ResponseType = PaymentResponse.Type.DevicesListed;
@@ -163,7 +158,7 @@ namespace PagarMe.Bifrost.WebSocket
         {
             var initialize = request.Initialize;
 
-            var deviceContextName = mposBridge.GetDeviceContextName(initialize.DeviceId);
+            var deviceContextName = serviceHandler.GetDeviceContextName(initialize.DeviceId);
 
             if (deviceContextName != null && deviceContextName != request.ContextId)
             {
@@ -185,11 +180,14 @@ namespace PagarMe.Bifrost.WebSocket
             }
         }
 
-        private void setStatus(Context context, PaymentResponse response)
+        private Task setStatus(Context context, PaymentRequest request, PaymentResponse response)
         {
-            var result = context.GetStatus();
-            response.Status = result;
-            response.ResponseType = PaymentResponse.Type.Status;
+            return Task.Run(() =>
+            {
+                var result = context.GetStatus();
+                response.Status = result;
+                response.ResponseType = PaymentResponse.Type.Status;
+            });
         }
 
         private async Task process(Context context, PaymentRequest request, PaymentResponse response)
@@ -223,7 +221,7 @@ namespace PagarMe.Bifrost.WebSocket
         private async Task close(Context context, PaymentRequest request, PaymentResponse response)
         {
 	        response.ResponseType = 
-		        await mposBridge.KillContext(request);
+		        await serviceHandler.KillContext(request);
         }
 
 

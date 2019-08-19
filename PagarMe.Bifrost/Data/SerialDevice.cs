@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.IO.Ports;
 
-namespace PagarMe.Bifrost.Devices
+namespace PagarMe.Bifrost.Data
 {
     internal class SerialDevice
     {

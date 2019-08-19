@@ -1,9 +1,9 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using System;
 using System.Text.RegularExpressions;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
-namespace PagarMe.Bifrost.WebSocket
+namespace PagarMe.Bifrost.Util
 {
     internal class SnakeCase
     {
