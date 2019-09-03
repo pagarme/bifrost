@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using PagarMe.Bifrost.Commands;
+using PagarMe.Mpos.Entities;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -198,7 +199,7 @@ namespace PagarMe.Bifrost.WebSocket
             var process = await context.ProcessPayment(request.Process);
             response.Process = process.Result;
 
-            if (process.Result.Status == Mpos.PaymentStatus.Accepted)
+            if (process.Result.Status == PaymentStatus.Accepted)
             {
                 response.ResponseType = PaymentResponse.Type.Processed;
             }

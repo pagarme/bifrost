@@ -1,5 +1,6 @@
 ﻿using PagarMe.Mpos;
 using PagarMe.Mpos.Devices;
+using PagarMe.Mpos.Entities;
 using System;
 
 namespace PagarMe.Bifrost.Commands

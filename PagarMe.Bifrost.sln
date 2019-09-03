@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.489
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PagarMe.Bifrost.Service", "PagarMe.Bifrost.Service\PagarMe.Bifrost.Service.csproj", "{260A53A3-7BEF-49D7-8D8A-AC4753464218}"
 EndProject
@@ -182,7 +182,6 @@ Global
 		{B6ADDA66-8F63-49CA-B68F-549D1AB45769}.Release|x86.ActiveCfg = Release|Any CPU
 		{B6ADDA66-8F63-49CA-B68F-549D1AB45769}.Release|x86.Build.0 = Release|Any CPU
 		{657AA86A-BD48-4E8B-9807-6F8F74704ED1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{657AA86A-BD48-4E8B-9807-6F8F74704ED1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{657AA86A-BD48-4E8B-9807-6F8F74704ED1}.Debug|x64.ActiveCfg = Debug|Any CPU
 		{657AA86A-BD48-4E8B-9807-6F8F74704ED1}.Debug|x64.Build.0 = Debug|Any CPU
 		{657AA86A-BD48-4E8B-9807-6F8F74704ED1}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -237,5 +236,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A6DBAC74-A781-4528-96CE-BE2E02610A83}
 	EndGlobalSection
 EndGlobal
