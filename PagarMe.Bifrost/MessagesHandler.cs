@@ -167,7 +167,7 @@ namespace PagarMe.Bifrost
                 return;
             }
 
-			var initialized = await context.Initialize(initialize);
+            var initialized = await context.Initialize(initialize);
 
             if (initialized.HasValue)
             {
@@ -208,20 +208,20 @@ namespace PagarMe.Bifrost
 
         private async Task finish(Context context, PaymentRequest request, PaymentResponse response)
         {
-	        response.ResponseType = 
-		        await context.FinishPayment(request.Finish);
+            response.ResponseType =
+                await context.FinishPayment(request.Finish);
         }
 
         private async Task displayMessage(Context context, PaymentRequest request, PaymentResponse response)
         {
-	        response.ResponseType = 
-		        await context.DisplayMessage(request.DisplayMessage);
+            response.ResponseType =
+                await context.DisplayMessage(request.DisplayMessage);
         }
 
         private async Task close(Context context, PaymentRequest request, PaymentResponse response)
         {
-	        response.ResponseType = 
-		        await serviceHandler.KillContext(request);
+            response.ResponseType =
+                await serviceHandler.KillContext(request);
         }
 
 

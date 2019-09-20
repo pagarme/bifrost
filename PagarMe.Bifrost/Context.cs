@@ -21,12 +21,12 @@ namespace PagarMe.Bifrost
         private Action<String> sendErrorMessage { get; }
         public void OnError(MposResultCode errorCode)
         {
-	        var code = (Int32) errorCode;
-	        var message = mpos.GetMessage(errorCode);
-	        sendErrorMessage($"Error: [{code}] {message}");
+            var code = (Int32)errorCode;
+            var message = mpos.GetMessage(errorCode);
+            sendErrorMessage($"Error: [{code}] {message}");
         }
 
-		internal String DeviceId => device?.Id;
+        internal String DeviceId => device?.Id;
 
         public Context(ServiceHandler service, Action<String> sendErrorMessage)
         {
@@ -60,21 +60,20 @@ namespace PagarMe.Bifrost
 
                 var initTask = mpos.Initialize();
 
-				var completedInit = await initTask
-					.SetTimeout(request.TimeoutMilliseconds);
+                var completedInit = await initTask
+                    .SetTimeout(request.TimeoutMilliseconds);
 
-				if (!completedInit)
-				{
-					return null;
-				}
-
-				if (initTask.Result != MposResultCode.Ok)
-				{
-					OnError(initTask.Result);
-					return PaymentResponse.Type.Error;
-				}
+                if (!completedInit)
+                {
+                    return null;
+                }
 
                 await mpos.SynchronizeTables();
+                if (initTask.Result != MposResultCode.Ok)
+                {
+                    OnError(initTask.Result);
+                    return PaymentResponse.Type.Error;
+                }
 
                 status = ContextStatus.Ready;
             }
@@ -110,14 +109,14 @@ namespace PagarMe.Bifrost
 
             try
             {
-	            var message = request?.Message ?? String.Empty;
-				var result = await mpos.Display(message);
+                var message = request?.Message ?? String.Empty;
+                var result = await mpos.Display(message);
 
-				if (result == MposResultCode.Ok)
-					return PaymentResponse.Type.MessageDisplayed;
+                if (result == MposResultCode.Ok)
+                    return PaymentResponse.Type.MessageDisplayed;
 
-				OnError(result);
-				return PaymentResponse.Type.Error;
+                OnError(result);
+                return PaymentResponse.Type.Error;
             }
             finally
             {
@@ -172,7 +171,7 @@ namespace PagarMe.Bifrost
                 );
 
                 if (result == MposResultCode.Ok)
-	                return PaymentResponse.Type.Finished;
+                    return PaymentResponse.Type.Finished;
 
                 OnError(result);
                 return PaymentResponse.Type.Error;
@@ -190,7 +189,7 @@ namespace PagarMe.Bifrost
 
             if (result != MposResultCode.Ok)
             {
-	            return PaymentResponse.Type.Error;
+                return PaymentResponse.Type.Error;
             }
 
             status = ContextStatus.Closed;

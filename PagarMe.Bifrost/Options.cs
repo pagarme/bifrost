@@ -26,7 +26,7 @@ namespace PagarMe.Bifrost
 
         public Boolean Fail => Errors?.Any() ?? false;
 
-		public IEnumerable<Error> Errors { get; private set; }
+        public IEnumerable<Error> Errors { get; private set; }
 
         public Options() { }
 
@@ -36,15 +36,15 @@ namespace PagarMe.Bifrost
 
             var parser = Parser.Default.ParseArguments<Options>(args);
 
-			parser.WithParsed(o =>
-			{
-				options = o;
-			});
+            parser.WithParsed(o =>
+            {
+                options = o;
+            });
 
-			parser.WithNotParsed(e =>
-			{
-				options.Errors = e;
-			});
+            parser.WithNotParsed(e =>
+            {
+                options.Errors = e;
+            });
 
             if (options.Fail)
             {

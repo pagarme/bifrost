@@ -23,7 +23,7 @@ namespace PagarMe.Bifrost
         public Options Options { get; }
         internal DeviceManager DeviceManager { get; }
 
-		public ServiceHandler(Options options)
+        public ServiceHandler(Options options)
         {
             Options = options;
             DeviceManager = new DeviceManager(Log.TryLogOnException);
@@ -50,7 +50,7 @@ namespace PagarMe.Bifrost
 
             server.Log.File = Log.GetLogFilePath();
 
-			messagesHandler = new MessagesHandler(this);
+            messagesHandler = new MessagesHandler(this);
             server.AddWebSocketService("/mpos", () => messagesHandler);
             server.Start();
         }
@@ -84,22 +84,22 @@ namespace PagarMe.Bifrost
 
             lock (contexts)
             {
-				if (contexts.ContainsKey(name))
-					return contexts[name];
+                if (contexts.ContainsKey(name))
+                    return contexts[name];
 
-				var allowed = new[]
-				{
-					PaymentRequest.Type.Initialize,
-					PaymentRequest.Type.ListDevices,
-				};
+                var allowed = new[]
+                {
+                    PaymentRequest.Type.Initialize,
+                    PaymentRequest.Type.ListDevices,
+                };
 
-				if (allowed.Contains(request.RequestType))
-	            {
-		            var context = new Context(this, messagesHandler.OnError);
-		            contexts[name] = context;
+                if (allowed.Contains(request.RequestType))
+                {
+                    var context = new Context(this, messagesHandler.OnError);
+                    contexts[name] = context;
 
-		            return context;
-	            }
+                    return context;
+                }
             }
 
             return null;
@@ -109,8 +109,8 @@ namespace PagarMe.Bifrost
         {
             var context = GetContext(request);
 
-			if (context != null &&
-			    context.GetStatus().Code != ContextStatus.Closed)
+            if (context != null &&
+                context.GetStatus().Code != ContextStatus.Closed)
             {
                 var result = await context.Close();
                 context.Dispose();

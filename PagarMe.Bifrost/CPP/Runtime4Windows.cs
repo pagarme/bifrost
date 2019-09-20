@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Win32;
@@ -10,7 +10,7 @@ namespace PagarMe.Bifrost.CPP
     {
         public static Task InstallIfNotFound()
         {
-            return Task.Run(() => 
+            return Task.Run(() =>
             {
                 if (ProgramEnvironment.IsWindows)
                 {
@@ -18,7 +18,7 @@ namespace PagarMe.Bifrost.CPP
                 }
             });
         }
-        
+
         private static void installIfNotFound()
         {
             Log.Me.Info("Verify C++ runtime for windows");
@@ -47,31 +47,31 @@ namespace PagarMe.Bifrost.CPP
 
         private static Boolean verify()
         {
-	        var mainKeyName = @"Installer\Dependencies";
+            var mainKeyName = @"Installer\Dependencies";
 
-	        var value = Registry.ClassesRoot.OpenSubKey(mainKeyName);
+            var value = Registry.ClassesRoot.OpenSubKey(mainKeyName);
 
-	        if (value == null)
-		        return true;
+            if (value == null)
+                return true;
 
-	        var archCode = Environment.Is64BitProcess ? "amd64" : "x86";
-	        var archKeyNames = value.GetSubKeyNames()
-		        .Where(n => n.Contains(archCode))
-		        .ToList();
+            var archCode = Environment.Is64BitProcess ? "amd64" : "x86";
+            var archKeyNames = value.GetSubKeyNames()
+                .Where(n => n.Contains(archCode))
+                .ToList();
 
-			if (!archKeyNames.Any())
-				return true;
+            if (!archKeyNames.Any())
+                return true;
 
-			foreach (var archKeyName in archKeyNames)
-			{
-				var archKey = value.OpenSubKey(archKeyName);
-				var displayName = archKey?.GetValue("DisplayName");
+            foreach (var archKeyName in archKeyNames)
+            {
+                var archKey = value.OpenSubKey(archKeyName);
+                var displayName = archKey?.GetValue("DisplayName");
 
-				if (displayName != null && displayName.ToString().Contains("C++"))
-					return false;
-			}
+                if (displayName != null && displayName.ToString().Contains("C++"))
+                    return false;
+            }
 
-			return true;
+            return true;
         }
     }
 }
