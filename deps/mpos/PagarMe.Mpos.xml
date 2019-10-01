@@ -1,0 +1,768 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>PagarMe.Mpos</name>
+    </assembly>
+    <members>
+        <member name="T:PagarMe.Mpos.Entities.CardType">
+            <summary>
+            Card type used on mpos
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.CardType.Magstripe">
+            <summary>
+            Magstripe
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.CardType.Emv">
+            <summary>
+            Chip
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.CardType.None">
+            <summary>
+            Not identified
+            </summary>
+        </member>
+        <member name="T:PagarMe.Mpos.Entities.Error`1">
+            <summary>
+            Detailed error
+            </summary>
+        </member>
+        <member name="M:PagarMe.Mpos.Entities.Error`1.#ctor(System.Text.StringBuilder,System.Byte,System.Nullable{PagarMe.Mpos.Entities.MposFunction})">
+            <inheritdoc />
+        </member>
+        <member name="M:PagarMe.Mpos.Entities.Error`1.#ctor(System.String,`0,System.Nullable{PagarMe.Mpos.Entities.MposFunction})">
+            <inheritdoc />
+        </member>
+        <member name="P:PagarMe.Mpos.Entities.Error`1.Message">
+            <summary>
+            Explanation in text
+            </summary>
+        </member>
+        <member name="P:PagarMe.Mpos.Entities.Error`1.Code">
+            <summary>
+            Code by enum of possible codes
+            </summary>
+        </member>
+        <member name="P:PagarMe.Mpos.Entities.Error`1.Function">
+            <summary>
+            Which step the error occured
+            </summary>
+        </member>
+        <member name="M:PagarMe.Mpos.Entities.Error`1.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:PagarMe.Mpos.Entities.InternalError">
+            <inheritdoc />
+        </member>
+        <member name="T:PagarMe.Mpos.Entities.InternalErrorCode">
+            <summary>
+            These errors are internal
+            If one of them occur, contact us
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.InternalErrorCode.ParameterNotFound">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.InternalErrorCode.MismatchedTypes">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.InternalErrorCode.UnknownParameter">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.InternalErrorCode.ExtractionFailure">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.InternalErrorCode.MissingSyn">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.InternalErrorCode.MissingEtb">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.InternalErrorCode.CrcDoesNotMatch">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.InternalErrorCode.CrcNotFound">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.InternalErrorCode.ConfirmationByteNotFound">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.InternalErrorCode.IncompletePktdata">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.InternalErrorCode.WrongArgumentSize">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.InternalErrorCode.ParseError">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.InternalErrorCode.WrongPinpadSequenceCall">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.InternalErrorCode.Unknown">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:PagarMe.Mpos.Entities.MposFunction">
+            <summary>
+            Mpos execution step
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposFunction.None">
+            <summary>
+            No step was taken
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposFunction.Initialize">
+            <summary>
+            Start communication with mpos
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposFunction.Display">
+            <summary>
+            Display message
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposFunction.Timeout">
+            <summary>
+            Communication with mpos failed
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposFunction.TableLoadInitialization">
+            <summary>
+            Initialization of table updates
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposFunction.TableLoadRecord">
+            <summary>
+            Table being recorded on mpos
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposFunction.GetTableVersion">
+            <summary>
+            Get version of tables in use on mpos
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposFunction.TableLoadEnd">
+            <summary>
+            End of table updates
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposFunction.GetCard">
+            <summary>
+            Get card information
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposFunction.GoOnChipProcessing">
+            <summary>
+            Processing card information with chip
+            This is were the mpos waits for password with inserted card
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposFunction.GetEncryptedPin">
+            <summary>
+            Wait for password after card was passed, but no inserted
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposFunction.FinishChipProcessing">
+            <summary>
+            Finish process, when it needs a closure
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposFunction.RemoveCard">
+            <summary>
+            Wait for the card to be removed, if it was inserted
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposFunction.Close">
+            <summary>
+            End of mpos communication
+            </summary>
+        </member>
+        <member name="T:PagarMe.Mpos.Entities.MposResultCode">
+            <summary>
+            Possible errors
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposResultCode.Ok">
+            <summary>
+            Success
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposResultCode.NoSecure">
+            <summary>
+            Tried to use safe communication without starting as safe
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposResultCode.PressedF1">
+            <summary>
+            Pressed F1 on mpos
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposResultCode.PressedF2">
+            <summary>
+            Pressed F2 on mpos
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposResultCode.PressedF3">
+            <summary>
+            Pressed F3 on mpos
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposResultCode.PressedF4">
+            <summary>
+            Pressed F4 on mpos
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposResultCode.PressedBackspace">
+            <summary>
+            Pressed backspace on mpos
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposResultCode.ErrorOnPackage">
+            <summary>
+            Empty package received on safe communication
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposResultCode.InvalidCall">
+            <summary>
+            Invalid call: out of order or unknown command
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposResultCode.InvalidParameter">
+            <summary>
+            Invalid parameter passed to command
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposResultCode.Timeout">
+            <summary>
+            Time to answer expired
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposResultCode.Canceled">
+            <summary>
+            Operation canceled by user
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposResultCode.NotInitialized">
+            <summary>
+            Initialize not called
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposResultCode.MissingParameter">
+            <summary>
+            Missing Parameter for command
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposResultCode.DifferentTableVersion">
+            <summary>
+            Table version different from what is expected
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposResultCode.TableRecordError">
+            <summary>
+            Problem while recording table - maybe not enough memory
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposResultCode.FatalError">
+            <summary>
+            Unexpected error
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposResultCode.MagstripeError">
+            <summary>
+            Fail on reading magstripe
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposResultCode.KeyError">
+            <summary>
+            Communication to card criteria not found
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposResultCode.NoCard">
+            <summary>
+            Card missing
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposResultCode.MposBusy">
+            <summary>
+            Mpos cannot communicate for security reasons
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposResultCode.TooLargePackage">
+            <summary>
+            Too large package sent to mpos
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposResultCode.NoSam">
+            <summary>
+            SAM missing, mute or with communication error
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposResultCode.DumbCard">
+            <summary>
+            Card missing or do not responding
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposResultCode.CardError">
+            <summary>
+            Error on card communication
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposResultCode.InvalidatedCard">
+            <summary>
+            Invalidated card
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposResultCode.CardProblems">
+            <summary>
+            Card with errors, terminate the transaction
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposResultCode.InvalidData">
+            <summary>
+            Card with invalid data
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposResultCode.NoTableCard">
+            <summary>
+            Tables to communicate to card missing
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposResultCode.DeniedTableCard">
+            <summary>
+            The table selected cannot be used for this purpose
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposResultCode.MagstripeFallback">
+            <summary>
+            Fallback to magstripe
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposResultCode.InvalidAmount">
+            <summary>
+            Invalid amount
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposResultCode.TableOverflow">
+            <summary>
+            Available tables overflow terminal capacity
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposResultCode.MultipleContactless">
+            <summary>
+            Tried to use more than one contactless card
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposResultCode.ContactlessError">
+            <summary>
+            Error on contactless communication
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposResultCode.ContactlessInvalidated">
+            <summary>
+            Contactless invalidated
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposResultCode.ContactlessProblems">
+            <summary>
+            Contactless with errors, terminate the transaction
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposResultCode.NoTableContactless">
+            <summary>
+            Tables to communicate to contactless missing
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposResultCode.DeniedTableContactless">
+            <summary>
+            The table selected cannot be used for this purpose
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposResultCode.MultimediaFileMissing">
+            <summary>
+            Missing mpos configuration
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposResultCode.MultimediaFileWrongFormat">
+            <summary>
+            Mpos configuration with wrong format
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposResultCode.MultimediaFileError">
+            <summary>
+            Error on loading mpos configuration
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposResultCode.Unfinished">
+            <summary>
+            Unexpected result, maybe the process did not finish
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposResultCode.Fatal">
+            <summary>
+            An error occured on a lower level
+            HandleFatal function has details
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposResultCode.Closed">
+            <summary>
+            Tried to call mpos when the connection was closed
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.MposResultCode.Disconnected">
+            <summary>
+            Mpos was disconnected
+            </summary>
+        </member>
+        <member name="T:PagarMe.Mpos.Entities.PagarMeException">
+            <summary>
+            Exceptions occured inside the Pagar.me .NET SDK for mpos
+            </summary>
+        </member>
+        <member name="T:PagarMe.Mpos.Entities.PaymentMethod">
+            <summary>
+            Chosen method for paying
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.PaymentMethod.None">
+            <summary>
+            None chosen
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.PaymentMethod.Credit">
+            <summary>
+            Only credit card
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.PaymentMethod.Debit">
+            <summary>
+            Only debit card
+            </summary>
+        </member>
+        <member name="T:PagarMe.Mpos.Entities.PaymentResult">
+            <summary>
+            Payment data after start transaction
+            </summary>
+        </member>
+        <member name="M:PagarMe.Mpos.Entities.PaymentResult.#ctor">
+            <inheritdoc />
+        </member>
+        <member name="P:PagarMe.Mpos.Entities.PaymentResult.CardHash">
+            <summary>
+            Transaction encrypted data
+            </summary>
+        </member>
+        <member name="P:PagarMe.Mpos.Entities.PaymentResult.ResultCode">
+            <summary>
+            Result Code
+            </summary>
+        </member>
+        <member name="P:PagarMe.Mpos.Entities.PaymentResult.Message">
+            <summary>
+            Error message, if it is an error
+            </summary>
+        </member>
+        <member name="P:PagarMe.Mpos.Entities.PaymentResult.PaymentMethod">
+            <summary>
+            Payment method used
+            </summary>
+        </member>
+        <member name="P:PagarMe.Mpos.Entities.PaymentResult.CardHolderName">
+            <summary>
+            Name of the card owner
+            </summary>
+        </member>
+        <member name="M:PagarMe.Mpos.Entities.PaymentResult.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:PagarMe.Mpos.Entities.PaymentStatus">
+            <summary>
+            Transaction Status after starting at Mpos
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.PaymentStatus.Accepted">
+            <summary>
+            Succeeded
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.PaymentStatus.Errored">
+            <summary>
+            Mpos had an error
+            </summary>
+        </member>
+        <member name="F:PagarMe.Mpos.Entities.PaymentStatus.Canceled">
+            <summary>
+            User canceled the transaction
+            </summary>
+        </member>
+        <member name="T:PagarMe.Mpos.Extensions.ConsoleX">
+            <summary>
+            Console on asteroids
+            </summary>
+        </member>
+        <member name="M:PagarMe.Mpos.Extensions.ConsoleX.WriteWithTime(System.Object)">
+            <summary>
+            Print texts to console with the time it happened
+            </summary>
+        </member>
+        <member name="M:PagarMe.Mpos.Extensions.ConsoleX.WriteWithTime(System.Byte[])">
+            <summary>
+            To print string and codes of bytes
+            </summary>
+        </member>
+        <member name="M:PagarMe.Mpos.Extensions.ConsoleX.Surround(System.ConsoleColor,System.String,System.Func{System.Threading.Tasks.Task})">
+            <summary>
+            Print a block with color, start and end
+            </summary>
+            <param name="color">The color of the block</param>
+            <param name="name">Block name</param>
+            <param name="action">Function/lambda to execute inside block</param>
+        </member>
+        <member name="M:PagarMe.Mpos.Extensions.ConsoleX.Surround``1(System.ConsoleColor,System.String,System.Func{System.Threading.Tasks.Task{``0}})">
+            <summary>
+            Print a block with color, start and end
+            </summary>
+            <param name="color">The color of the block</param>
+            <param name="name">Block name</param>
+            <param name="action">Function/lambda to execute inside block</param>
+        </member>
+        <member name="T:PagarMe.Mpos.Mpos">
+            <summary>
+            Class to communicate to Mpos
+            </summary>
+        </member>
+        <member name="M:PagarMe.Mpos.Mpos.#ctor(System.IO.Stream,System.String)">
+            <param name="stream">
+            Stream to read and write in mpos communication
+            </param>
+            <param name="encryptionKey">
+            Pagar.me Encryption Key
+            </param>
+        </member>
+        <member name="M:PagarMe.Mpos.Mpos.#ctor(PagarMe.Mpos.SimpleStream,PagarMe.Mpos.Web.IApi)">
+            <summary>
+            For tests only
+            </summary>
+        </member>
+        <member name="M:PagarMe.Mpos.Mpos.Initialize">
+            <summary>
+            Start the communication to Mpos
+            </summary>
+        </member>
+        <member name="M:PagarMe.Mpos.Mpos.SynchronizeTables">
+            <summary>
+            Update data to communicate with cards
+            </summary>
+        </member>
+        <member name="M:PagarMe.Mpos.Mpos.ProcessPayment(System.Int32,PagarMe.Mpos.Entities.PaymentMethod)">
+            <summary>
+            Start processing payment
+            </summary>
+            <param name="amount">Value in cents</param>
+            <param name="method">Payment method</param>
+        </member>
+        <member name="M:PagarMe.Mpos.Mpos.FinishTransaction(System.String,System.String,System.String)">
+            <summary>
+            Finish processing payment
+            </summary>
+            <param name="authorizationResponseCode">Value in cents</param>
+            <param name="emvResponse">Payment method</param>
+            <param name="removeCardMessage">Message to show on mpos to remove card</param>
+        </member>
+        <member name="M:PagarMe.Mpos.Mpos.Display(System.String)">
+            <summary>
+            Display a message on mpos
+            </summary>
+        </member>
+        <member name="M:PagarMe.Mpos.Mpos.Close">
+            <summary>
+            Closes communication
+            </summary>
+        </member>
+        <member name="M:PagarMe.Mpos.Mpos.Close(System.String)">
+            <summary>
+            Closes communication
+            </summary>
+            <param name="message">Message to display screen</param>
+        </member>
+        <member name="M:PagarMe.Mpos.Mpos.Dispose">
+            <summary>
+            Clear mpos allocations from memory
+            </summary>
+        </member>
+        <member name="P:PagarMe.Mpos.Mpos.HandleFatalError">
+            <summary>
+            Receive the code when a fatal error occurs
+            while processing the transaction
+            - not the normal mpos errors, like
+            transaction cancellation
+            </summary>
+        </member>
+        <member name="P:PagarMe.Mpos.Mpos.HandleNotification">
+            <summary>
+            Receive notification messages
+            </summary>
+        </member>
+        <member name="P:PagarMe.Mpos.Mpos.History">
+            <summary>
+            Logs history
+            </summary>
+        </member>
+        <member name="T:PagarMe.Mpos.v1.EmvApplication">
+            <summary>
+            Obsolete: use the second parameter of ProcessPayment to filter payment method
+            </summary>
+        </member>
+        <member name="M:PagarMe.Mpos.v1.EmvApplication.#ctor(System.String,PagarMe.Mpos.Entities.PaymentMethod)">
+            <summary>
+            Obsolete: use the second parameter of ProcessPayment to filter payment method
+            </summary>
+        </member>
+        <member name="P:PagarMe.Mpos.v1.EmvApplication.Brand">
+            <summary>
+            Obsolete: use the second parameter of ProcessPayment to filter payment method
+            </summary>
+        </member>
+        <member name="P:PagarMe.Mpos.v1.EmvApplication.PaymentMethod">
+            <summary>
+            Obsolete: use the second parameter of ProcessPayment to filter payment method
+            </summary>
+        </member>
+        <member name="T:PagarMe.Mpos.v1.Mpos">
+            <summary>
+            Use Mpos
+            </summary>
+        </member>
+        <member name="M:PagarMe.Mpos.v1.Mpos.#ctor(System.IO.Stream,System.String,System.String)">
+            <summary>
+            Use Mpos, storagePath is obsolete
+            </summary>
+        </member>
+        <member name="E:PagarMe.Mpos.v1.Mpos.Initialized">
+            <summary>
+            Use await mpos.Initialize
+            </summary>
+        </member>
+        <member name="M:PagarMe.Mpos.v1.Mpos.Initialize">
+            <inheritdoc />
+        </member>
+        <member name="E:PagarMe.Mpos.v1.Mpos.TableUpdated">
+            <summary>
+            Use await mpos.SynchronizeTables
+            </summary>
+        </member>
+        <member name="M:PagarMe.Mpos.v1.Mpos.SynchronizeTables(System.Boolean)">
+            <summary>
+            Use Mpos, forceUpdate is obsolete
+            </summary>
+        </member>
+        <member name="E:PagarMe.Mpos.v1.Mpos.PaymentProcessed">
+            <summary>
+            Use await mpos.ProcessPayment
+            </summary>
+        </member>
+        <member name="M:PagarMe.Mpos.v1.Mpos.ProcessPayment(System.Int32,System.Collections.Generic.IEnumerable{PagarMe.Mpos.v1.EmvApplication},PagarMe.Mpos.Entities.PaymentMethod)">
+            <summary>
+            Use the other method, with await, applications is obsolete
+            </summary>
+        </member>
+        <member name="E:PagarMe.Mpos.v1.Mpos.FinishedTransaction">
+            <summary>
+            Use await mpos.FinishTransaction
+            </summary>
+        </member>
+        <member name="M:PagarMe.Mpos.v1.Mpos.FinishTransaction(System.Boolean,System.Int32,System.String)">
+            <summary>
+            Use the other method, with await, success is obsolete
+            </summary>
+        </member>
+        <member name="E:PagarMe.Mpos.v1.Mpos.Closed">
+            <summary>
+            Use await mpos.Close
+            </summary>
+        </member>
+        <member name="M:PagarMe.Mpos.v1.Mpos.Cancel">
+            <summary>
+            Call Close
+            </summary>
+        </member>
+        <member name="M:PagarMe.Mpos.v1.Mpos.Close">
+            <inheritdoc />
+        </member>
+        <member name="E:PagarMe.Mpos.v1.Mpos.Errored">
+            <summary>
+            Use result of await mpos.ProcessPayment
+            </summary>
+        </member>
+        <member name="E:PagarMe.Mpos.v1.Mpos.NotificationReceived">
+            <summary>
+            Use mpos.HandleNotification
+            </summary>
+        </member>
+        <member name="P:PagarMe.Mpos.v1.Mpos.HandleNotification">
+            <inheritdoc cref="P:PagarMe.Mpos.v1.Mpos.HandleNotification"/>
+        </member>
+        <member name="E:PagarMe.Mpos.v1.Mpos.OperationCompleted">
+            <summary>
+            Use await on operations
+            </summary>
+        </member>
+        <member name="T:PagarMe.Mpos.v1.PaymentResult">
+            <summary>
+            Obsolete, use PagarMe.Mpos.Entities.Payment
+            </summary>
+        </member>
+        <member name="P:PagarMe.Mpos.v1.PaymentResult.ErrorCode">
+            <summary>
+            Obsolete, use ResultCode
+            </summary>
+        </member>
+        <member name="P:PagarMe.Mpos.v1.PaymentResult.Status">
+            <summary>
+            Obsolete, use ResultCode
+            </summary>
+        </member>
+        <member name="T:PagarMe.Mpos.Web.TLS">
+            <summary>
+            To help using TLS 1.2
+            </summary>
+        </member>
+        <member name="M:PagarMe.Mpos.Web.TLS.RunWithTLS12``1(System.Func{System.Threading.Tasks.Task{``0}})">
+            <summary>
+            Changes the default protocol to TLS 1.2
+            to run the request that needs this protocol
+            then return to previous configuration
+            </summary>
+        </member>
+    </members>
+</doc>

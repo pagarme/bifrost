@@ -1,71 +1,80 @@
 using System;
-using System.IO;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using PagarMe.Bifrost.Commands;
-using PagarMe.Bifrost.Providers;
-using PagarMe.Mpos.Devices;
+using PagarMe.Bifrost.Data;
 using PagarMe.Generic;
+using PagarMe.Mpos.Entities;
+using mpos = PagarMe.Mpos.Mpos;
 
 namespace PagarMe.Bifrost
 {
-    public class Context : IDisposable
+    internal class Context : IDisposable
     {
-        private readonly MposBridge bridge;
+        private readonly ServiceHandler service;
         private readonly SemaphoreSlim locker;
-        private IProvider provider;
-        private IDevice device;
+        private SerialDevice device;
 
         private ContextStatus status;
 
+        private mpos mpos;
+
+        private Action<String> sendErrorMessage { get; }
+        public void OnError(MposResultCode errorCode)
+        {
+            var code = (Int32)errorCode;
+            var message = mpos.GetMessage(errorCode);
+            sendErrorMessage($"Error: [{code}] {message}");
+        }
+
         internal String DeviceId => device?.Id;
 
-        public Context(MposBridge bridge, IProvider provider)
+        public Context(ServiceHandler service, Action<String> sendErrorMessage)
         {
-            this.bridge = bridge;
-            this.provider = provider;
+            this.service = service;
+            this.sendErrorMessage = sendErrorMessage;
             locker = new SemaphoreSlim(1, 1);
             status = ContextStatus.Uninitialized;
         }
 
-        public Task<IDevice[]> ListDevices()
+        public Task<SerialDevice[]> ListDevices()
         {
-            var devices = bridge.DeviceManager.FindAvailableDevices();
+            var devices = service.DeviceManager.FindAvailableDevices();
             return Task.FromResult(devices);
         }
 
         internal PaymentRequest.Type CurrentOperation { get; set; }
 
-        public async Task<Boolean?> Initialize(InitializeRequest request, Action<Int32> onError)
+        public async Task<PaymentResponse.Type?> Initialize(InitializeRequest request)
         {
             if (status == ContextStatus.Ready)
-                return false;
+                return PaymentResponse.Type.AlreadyInitialized;
 
             await locker.WaitAsync();
 
             try
             {
-                var device = bridge.DeviceManager.GetById(request.DeviceId);
-                var dataPath = ensureDataPath(device, request.EncryptionKey);
+                device = service.DeviceManager.GetById(request.DeviceId);
+                var stream = device.Open(request.BaudRate);
 
-                var completedInit = await provider.Open(new InitializationOptions
-                {
-                    Device = device,
-                    EncryptionKey = request.EncryptionKey,
-                    StoragePath = dataPath,
-                    BaudRate = request.BaudRate,
-                    OnError = onError
-                }).SetTimeout(request.TimeoutMilliseconds);
-                if (!completedInit) return null;
+                mpos = new mpos(stream, request.EncryptionKey);
 
-                if (!request.SimpleInitialize)
+                var initTask = mpos.Initialize();
+
+                var completedInit = await initTask
+                    .SetTimeout(request.TimeoutMilliseconds);
+
+                if (!completedInit)
                 {
-                    await provider.SynchronizeTables(false);
+                    return null;
                 }
 
-                this.device = device;
+                await mpos.SynchronizeTables();
+                if (initTask.Result != MposResultCode.Ok)
+                {
+                    OnError(initTask.Result);
+                    return PaymentResponse.Type.Error;
+                }
+
                 status = ContextStatus.Ready;
             }
             finally
@@ -73,12 +82,12 @@ namespace PagarMe.Bifrost
                 locker.Release(1);
             }
 
-            return true;
+            return PaymentResponse.Type.Initialized;
         }
 
-        public Task<StatusResponse> GetStatus()
+        public StatusResponse GetStatus()
         {
-            var devices = bridge.DeviceManager.FindAvailableDevices();
+            var devices = service.DeviceManager.FindAvailableDevices();
 
             var response = new StatusResponse
             {
@@ -91,16 +100,23 @@ namespace PagarMe.Bifrost
                 response.ConnectedDeviceId = device.Id;
             }
 
-            return Task.FromResult(response);
+            return response;
         }
 
-        public async Task DisplayMessage(DisplayMessageRequest request)
+        public async Task<PaymentResponse.Type> DisplayMessage(DisplayMessageRequest request)
         {
             await locker.WaitAsync();
 
             try
             {
-                await provider.DisplayMessage(request?.Message ?? String.Empty);
+                var message = request?.Message ?? String.Empty;
+                var result = await mpos.Display(message);
+
+                if (result == MposResultCode.Ok)
+                    return PaymentResponse.Type.MessageDisplayed;
+
+                OnError(result);
+                return PaymentResponse.Type.Error;
             }
             finally
             {
@@ -119,7 +135,17 @@ namespace PagarMe.Bifrost
             {
                 status = ContextStatus.InUse;
 
-                return await provider.ProcessPayment(request);
+                var paymentMethod = request.PaymentMethod;
+
+                if (paymentMethod == 0)
+                    paymentMethod = PaymentMethod.Credit;
+
+                var response = await mpos.ProcessPayment(request.Amount, paymentMethod);
+
+                return new ProcessPaymentResponse
+                {
+                    Result = response
+                };
             }
             finally
             {
@@ -128,7 +154,7 @@ namespace PagarMe.Bifrost
             }
         }
 
-        public async Task FinishPayment(FinishPaymentRequest request)
+        public async Task<PaymentResponse.Type> FinishPayment(FinishPaymentRequest request)
         {
             await locker.WaitAsync();
 
@@ -139,7 +165,16 @@ namespace PagarMe.Bifrost
             {
                 status = ContextStatus.InUse;
 
-                await provider.FinishPayment(request);
+                var result = await mpos.FinishTransaction(
+                    request.ResponseCode.ToString("0000"),
+                    request.EmvData
+                );
+
+                if (result == MposResultCode.Ok)
+                    return PaymentResponse.Type.Finished;
+
+                OnError(result);
+                return PaymentResponse.Type.Error;
             }
             finally
             {
@@ -148,48 +183,26 @@ namespace PagarMe.Bifrost
             }
         }
 
-        private string ensureDataPath(IDevice device, string encryptionKey)
+        public async Task<PaymentResponse.Type> Close()
         {
-            var hashText = "";
+            var result = await mpos.Close();
 
-            hashText += encryptionKey;
-            hashText += device.Name;
-            hashText += device.Manufacturer;
-
-            var hashData = Encoding.UTF8.GetBytes(hashText);
-            var hash = SHA256.Create().ComputeHash(hashData);
-
-            var path = Path.Combine(bridge.Options.DataPath, BitConverter.ToString(hash)) + Path.DirectorySeparatorChar;
-
-            Directory.CreateDirectory(path);
-
-            return path;
-        }
-
-        public async Task Close()
-        {
-            try
+            if (result != MposResultCode.Ok)
             {
-                await provider.Close();
-            }
-            catch
-            {
-                // Doesn't matter, we're resetting anyway
+                return PaymentResponse.Type.Error;
             }
 
-            status = ContextStatus.Uninitialized;
+            status = ContextStatus.Closed;
+
+            return PaymentResponse.Type.ContextClosed;
         }
 
         public void Dispose()
         {
-            provider.Dispose();
-            provider = null;
-        }
+            mpos?.Dispose();
+            mpos = null;
 
-        internal Boolean IsInUse()
-        {
-            return CurrentOperation == PaymentRequest.Type.Process
-                || CurrentOperation == PaymentRequest.Type.Initialize;
+            device?.Close();
         }
     }
 }

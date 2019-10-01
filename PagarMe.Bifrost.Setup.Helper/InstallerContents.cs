@@ -2,7 +2,6 @@
 using System;
 using System.IO;
 using System.IO.Compression;
-using Version = PagarMe.Generic.Version;
 
 namespace PagarMe.Bifrost.Setup.Helper
 {

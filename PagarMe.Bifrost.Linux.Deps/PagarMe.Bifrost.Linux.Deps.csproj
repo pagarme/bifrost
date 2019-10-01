@@ -36,24 +36,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\deps\mpos\libmpos32.so">
-      <Link>libmpos32.so</Link>
+    <Content Include="..\deps\mpos\libabecs32.so">
+      <Link>libabecs32.so</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\deps\mpos\libmpos64.so">
-      <Link>libmpos64.so</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <Content Include="..\deps\mpos\libabecs64.so">	
+      <Link>libabecs64.so</Link>	
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>	
     </Content>
-    <Content Include="..\deps\mpos\libtms32.so">
-      <Link>libtms32.so</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\deps\mpos\libtms64.so">
-      <Link>libtms64.so</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="bifrost.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

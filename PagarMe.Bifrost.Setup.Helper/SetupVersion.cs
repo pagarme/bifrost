@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using System.Text.RegularExpressions;
-using PagarMe.Generic;
 
 namespace PagarMe.Bifrost.Setup.Helper
 {

@@ -17,7 +17,7 @@
     <OutputPath>..\bin\Debug</OutputPath>
     <DefineConstants>DEBUG;</DefineConstants>
     <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
@@ -29,23 +29,28 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.5.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
+      <HintPath>..\packages\BouncyCastle.1.8.5\lib\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
+    <Reference Include="CommandLine, Version=2.6.0.0, Culture=neutral, PublicKeyToken=5a870481e358d379, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommandLineParser.2.6.0\lib\net45\CommandLine.dll</HintPath>
+    </Reference>
+    <Reference Include="netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51" />
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.4.11\lib\net45\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.4.6.6\lib\net45\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="PagarMe.Mpos, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\deps\mpos\PagarMe.Mpos.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="BouncyCastle.Crypto">
-      <HintPath>..\packages\BouncyCastle.1.7.0\lib\Net40-Client\BouncyCastle.Crypto.dll</HintPath>
-    </Reference>
     <Reference Include="System.Management" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="mscorlib" />
     <Reference Include="System.Core" />
-    <Reference Include="CommandLine">
-      <HintPath>..\packages\CommandLineParser.1.9.71\lib\net45\CommandLine.dll</HintPath>
-    </Reference>
     <Reference Include="websocket-sharp, Version=1.0.2.59611, Culture=neutral, PublicKeyToken=5660b08a1845a91e, processorArchitecture=MSIL">
       <HintPath>..\packages\WebSocketSharp.1.0.3-rc11\lib\websocket-sharp.dll</HintPath>
     </Reference>
@@ -54,31 +59,26 @@
     <Compile Include="..\PagarMe.Generic\Properties\PagarMeAssemblyInfo.cs">
       <Link>Properties\PagarMeAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="C++\Runtime4Windows.cs" />
-    <Compile Include="Commands\PaymentRequest.cs" />
-    <Compile Include="Commands\PaymentResponse.cs" />
-    <Compile Include="Commands\TypeExtension.cs" />
-    <Compile Include="ContextStatus.cs" />
+    <Compile Include="CPP\Runtime4Windows.cs" />
+    <Compile Include="Data\PaymentRequest.cs" />
+    <Compile Include="Data\PaymentResponse.cs" />
+    <Compile Include="Data\TypeExtension.cs" />
+    <Compile Include="Data\ContextStatus.cs" />
     <Compile Include="Context.cs" />
-    <Compile Include="Commands\DisplayMessageRequest.cs" />
-    <Compile Include="Commands\FinishPaymentRequest.cs" />
-    <Compile Include="Commands\InitializeRequest.cs" />
-    <Compile Include="MposBridge.cs" />
-    <Compile Include="Commands\ProcessPaymentRequest.cs" />
-    <Compile Include="Commands\ProcessPaymentResponse.cs" />
+    <Compile Include="Data\DisplayMessageRequest.cs" />
+    <Compile Include="Data\FinishPaymentRequest.cs" />
+    <Compile Include="Data\InitializeRequest.cs" />
+    <Compile Include="DeviceManager.cs" />
+    <Compile Include="Data\SerialDevice.cs" />
+    <Compile Include="ServiceHandler.cs" />
+    <Compile Include="Data\ProcessPaymentRequest.cs" />
+    <Compile Include="Data\ProcessPaymentResponse.cs" />
     <Compile Include="Properties\BifrostAssemblyInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Options.cs" />
-    <Compile Include="Commands\StatusResponse.cs" />
-    <Compile Include="Providers\IProvider.cs" />
-    <Compile Include="Providers\MposProvider.cs" />
-    <Compile Include="Providers\InitializationOptions.cs" />
-    <Compile Include="Updates\Product.cs" />
-    <Compile Include="Updates\Request.cs" />
-    <Compile Include="Updates\Updater.cs" />
-    <Compile Include="Updates\WindowsUpdater.cs" />
-    <Compile Include="WebSocket\BifrostBehavior.cs" />
-    <Compile Include="WebSocket\SnakeCase.cs" />
+    <Compile Include="Data\StatusResponse.cs" />
+    <Compile Include="MessagesHandler.cs" />
+    <Compile Include="Util\SnakeCase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -93,14 +93,6 @@
     <ProjectReference Include="..\PagarMe.Generic\PagarMe.Generic.csproj">
       <Project>{0b590c92-a6fb-4af2-a275-05042eb8f4a1}</Project>
       <Name>PagarMe.Generic</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\mpos-net-sdk\PagarMe.Mpos\PagarMe.Mpos.csproj">
-      <Project>{0D5CB93F-C493-4EAD-86FC-98DBFDD63D8D}</Project>
-      <Name>PagarMe.Mpos</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PagarMe.Mpos\PagarMe.Mpos.csproj">
-      <Project>{0d5cb93f-c493-4ead-86fc-98dbfdd63d8d}</Project>
-      <Name>PagarMe.Mpos</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

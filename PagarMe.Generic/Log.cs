@@ -1,4 +1,4 @@
-﻿using NLog;
+using NLog;
 using NLog.Targets;
 using System;
 using System.IO;
@@ -36,7 +36,6 @@ namespace PagarMe.Generic
             }
         }
 
-        public static async Task TryLogOnExceptionAsync(Func<Task> action) { await TryLogOnExceptionAsync(action, null); }
         public static async Task TryLogOnExceptionAsync(Func<Task> action, Action<Exception> processInsteadThrow)
         {
             try
@@ -70,9 +69,9 @@ namespace PagarMe.Generic
                 if (exception == null)
                     return;
 
-	            var aggregateException = exception as AggregateException;
+                var aggregateException = exception as AggregateException;
 
-				if (aggregateException != null)
+                if (aggregateException != null)
                 {
                     foreach (var childException in aggregateException.InnerExceptions)
                     {
@@ -111,7 +110,8 @@ namespace PagarMe.Generic
 
             var logEventInfo = new LogEventInfo { TimeStamp = DateTime.Now };
             var relativeFileName = fileTarget.FileName.Render(logEventInfo);
-            return relativeFileName;
+            return relativeFileName
+                .Replace('?', Path.DirectorySeparatorChar);
         }
     }
 }

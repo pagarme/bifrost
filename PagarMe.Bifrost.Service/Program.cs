@@ -1,8 +1,7 @@
-using PagarMe.Bifrost.CPP;
-using PagarMe.Bifrost.Updates;
 using PagarMe.Generic;
 using System;
 using System.ServiceProcess;
+using PagarMe.Bifrost.CPP;
 
 namespace PagarMe.Bifrost.Service
 {
