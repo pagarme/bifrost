@@ -36,8 +36,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\deps\mpos\libabecs.dll">
-      <Link>libabecs.dll</Link>
+    <Content Include="..\deps\mpos\libabecs32.dll">
+      <Link>libabecs32.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\deps\mpos\libabecs64.dll">
+      <Link>libabecs64.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="..\deps\vc_redist.x64.exe">

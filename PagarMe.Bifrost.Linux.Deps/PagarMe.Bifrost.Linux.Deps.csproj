@@ -36,9 +36,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\deps\mpos\libabecs.so">
-      <Link>libabecs.so</Link>
+    <Content Include="..\deps\mpos\libabecs32.so">
+      <Link>libabecs32.so</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\deps\mpos\libabecs64.so">	
+      <Link>libabecs64.so</Link>	
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>	
     </Content>
     <Content Include="bifrost.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
