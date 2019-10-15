@@ -20,7 +20,7 @@ See [here](LICENSE.md).
 
 ## Base SDK
 
-This projects works based on the [mpos .NET SDK](https://github.com/pagarme/mpos-net-sdk)
+This projects works based of the [mpos .NET SDK](https://github.com/pagarme/mpos-net-sdk)
 
 ## Components
 
